@@ -1,0 +1,10 @@
+<resources>
+
+    <style name="Theme.TestTvApp" parent="@style/Theme.Leanback" />
+
+
+    <style name="Theme.AppCompat" parent="Theme.AppCompat.Light.NoActionBar" />
+    <style name="MyOnboarding" parent="@style/Theme.Leanback.VerticalGrid">
+
+    </style>
+</resources>
