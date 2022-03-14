@@ -80,6 +80,7 @@ public class LoginActivity extends AppCompatActivity {
 
             pbar.setVisibility(View.GONE);
             if (status){
+                AppRepository.updatelogin();
                 Prefrences.setisLoggedin(getApplicationContext(),true);
                 Intent intent = new Intent(LoginActivity.this, MainActivity.class);
                 startActivity(intent);

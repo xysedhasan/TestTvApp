@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="com.example.testtvapp">
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
     <uses-feature
         android:name="android.software.leanback"
         android:required="false" />
@@ -18,11 +19,11 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Leanback.VerticalGrid">
         <activity android:name=".Activities.LoginActivity"
-            android:banner="@drawable/app_icon_your_company"
-            android:icon="@drawable/app_icon_your_company"
+            android:banner="@mipmap/beyond"
+            android:icon="@mipmap/beyond"
             android:label="@string/app_name"
             android:theme="@style/Theme.AppCompat"
-            android:logo="@drawable/app_icon_your_company"
+            android:logo="@mipmap/beyond"
             android:screenOrientation="landscape">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -31,10 +32,10 @@
         </activity>
         <activity
             android:name=".MainActivity"
-            android:banner="@drawable/app_icon_your_company"
-            android:icon="@drawable/app_icon_your_company"
+            android:banner="@color/greenappcolor"
+            android:icon="@color/greenappcolor"
             android:label="@string/app_name"
-            android:logo="@drawable/app_icon_your_company"
+            android:logo="@color/greenappcolor"
             android:screenOrientation="landscape">
 
         </activity>

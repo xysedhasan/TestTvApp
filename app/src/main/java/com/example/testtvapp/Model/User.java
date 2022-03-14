@@ -7,9 +7,27 @@ public class User {
 
     String address, email, name, phone, role,empty_box;
     int  total_boxes;
-    boolean is_blocked, is_paid_user, login_status;
+    boolean is_blocked, is_paid_user, login_status, show_header;
     Date created_at, updated_at;
+    String empty_box_custom_image;
     ArrayList<String> array_for_boxes;
+
+    public String getEmpty_box_custom_image() {
+        return empty_box_custom_image;
+    }
+
+    public void setEmpty_box_custom_image(String empty_box_custom_image) {
+        this.empty_box_custom_image = empty_box_custom_image;
+    }
+
+
+    public boolean isShow_header() {
+        return show_header;
+    }
+
+    public void setShow_header(boolean show_header) {
+        this.show_header = show_header;
+    }
 
     public String getAddress() {
         return address;
