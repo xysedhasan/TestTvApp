@@ -2,8 +2,10 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     package="com.example.testtvapp">
+
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.WAKE_LOCK" />
+
     <uses-feature
         android:name="android.software.leanback"
         android:required="false" />
@@ -15,33 +17,43 @@
         android:allowBackup="true"
         android:icon="@mipmap/logo"
         android:label="@string/app_name"
-
         android:supportsRtl="true"
         android:theme="@style/Theme.Leanback.VerticalGrid">
-        <activity android:name=".Activities.LoginActivity"
+        <activity android:name=".Activities.Screen5Activity"
+            android:theme="@style/Theme.AppCompat"></activity>
+        <activity android:name=".Activities.Screen4Activity"
+            android:theme="@style/Theme.AppCompat"/>
+        <activity android:name=".Activities.Screen3Activity"
+            android:theme="@style/Theme.AppCompat"/>
+        <activity android:name=".Activities.Screen2Activity"
+            android:theme="@style/Theme.AppCompat"/>
+        <activity android:name=".Activities.Screen1Activity"
+            android:theme="@style/Theme.AppCompat"/>
+        <activity
+            android:name=".Activities.ChooseScreenActivity"
+            android:theme="@style/Theme.AppCompat" />
+        <activity
+            android:name=".Activities.LoginActivity"
             android:banner="@mipmap/beyond"
             android:icon="@mipmap/beyond"
             android:label="@string/app_name"
-            android:theme="@style/Theme.AppCompat"
             android:logo="@mipmap/beyond"
-            android:screenOrientation="landscape">
+            android:screenOrientation="landscape"
+            android:theme="@style/Theme.AppCompat">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LEANBACK_LAUNCHER" />
             </intent-filter>
         </activity>
         <activity
-            android:name=".MainActivity"
+            android:name=".Activities.MainActivity"
             android:banner="@color/greenappcolor"
             android:icon="@color/greenappcolor"
             android:label="@string/app_name"
             android:logo="@color/greenappcolor"
-            android:screenOrientation="landscape">
 
-        </activity>
-
+            android:screenOrientation="landscape" />
     </application>
-    
-    
 
 </manifest>

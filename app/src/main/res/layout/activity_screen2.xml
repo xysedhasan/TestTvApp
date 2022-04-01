@@ -2,75 +2,80 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/parent"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="#ffffff"
-    android:nestedScrollingEnabled="false"
     android:keepScreenOn="true"
-    android:id="@+id/parent"
+    android:nestedScrollingEnabled="false"
+    tools:context=".Activities.Screen2Activity">
 
-    tools:context=".MainActivity">
-
-
+    <ProgressBar
+        android:id="@+id/pbar"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="13dp"
+        android:visibility="gone" />
 
     <RelativeLayout
 
         android:id="@+id/header"
         android:layout_width="wrap_content"
+        android:layout_height="75dp"
         android:orientation="vertical"
         android:paddingLeft="5dp"
-        android:paddingRight="5dp"
         android:paddingTop="5dp"
-        android:visibility="invisible"
-        android:layout_height="75dp">
+        android:paddingRight="5dp"
+        android:visibility="invisible">
 
-<!--        <RelativeLayout-->
-<!--            android:id="@+id/bottomrltv"-->
-<!--            android:visibility="gone"-->
-<!--            android:layout_width="match_parent"-->
-<!--            android:layout_height="17dp"-->
-<!--            android:layout_centerHorizontal="true"-->
-<!--            android:gravity="center"-->
-<!--            android:padding="5dp"-->
-<!--            >-->
+        <!--        <RelativeLayout-->
+        <!--            android:id="@+id/bottomrltv"-->
+        <!--            android:visibility="gone"-->
+        <!--            android:layout_width="match_parent"-->
+        <!--            android:layout_height="17dp"-->
+        <!--            android:layout_centerHorizontal="true"-->
+        <!--            android:gravity="center"-->
+        <!--            android:padding="5dp"-->
+        <!--            >-->
 
-<!--            <ImageView-->
-<!--                android:id="@+id/emailiv"-->
-<!--                android:layout_width="10dp"-->
-<!--                android:layout_height="10dp"-->
-<!--                android:backgroundTint="@color/black"-->
-<!--                android:src="@drawable/logogreen" />-->
+        <!--            <ImageView-->
+        <!--                android:id="@+id/emailiv"-->
+        <!--                android:layout_width="10dp"-->
+        <!--                android:layout_height="10dp"-->
+        <!--                android:backgroundTint="@color/black"-->
+        <!--                android:src="@drawable/logogreen" />-->
 
-<!--            <TextView-->
-<!--                android:id="@+id/emailtv"-->
-<!--                android:layout_width="wrap_content"-->
-<!--                android:layout_height="wrap_content"-->
-<!--                android:layout_centerVertical="true"-->
-<!--                android:layout_marginLeft="5dp"-->
-<!--                android:layout_toRightOf="@+id/emailiv"-->
-<!--                android:text="www.beyondlotto.com"-->
-<!--                android:textColor="#000000"-->
-<!--                android:textSize="5sp" />-->
+        <!--            <TextView-->
+        <!--                android:id="@+id/emailtv"-->
+        <!--                android:layout_width="wrap_content"-->
+        <!--                android:layout_height="wrap_content"-->
+        <!--                android:layout_centerVertical="true"-->
+        <!--                android:layout_marginLeft="5dp"-->
+        <!--                android:layout_toRightOf="@+id/emailiv"-->
+        <!--                android:text="www.beyondlotto.com"-->
+        <!--                android:textColor="#000000"-->
+        <!--                android:textSize="5sp" />-->
 
-<!--            <ImageView-->
-<!--                android:id="@+id/phoneiv"-->
-<!--                android:layout_width="10dp"-->
-<!--                android:layout_height="10dp"-->
-<!--                android:layout_marginLeft="10dp"-->
-<!--                android:layout_toRightOf="@+id/emailtv"-->
-<!--                android:src="@drawable/ic_baseline_phone_24" />-->
+        <!--            <ImageView-->
+        <!--                android:id="@+id/phoneiv"-->
+        <!--                android:layout_width="10dp"-->
+        <!--                android:layout_height="10dp"-->
+        <!--                android:layout_marginLeft="10dp"-->
+        <!--                android:layout_toRightOf="@+id/emailtv"-->
+        <!--                android:src="@drawable/ic_baseline_phone_24" />-->
 
-<!--            <TextView-->
-<!--                android:id="@+id/phonetv"-->
-<!--                android:layout_width="wrap_content"-->
-<!--                android:layout_height="wrap_content"-->
-<!--                android:layout_centerVertical="true"-->
-<!--                android:layout_marginLeft="5dp"-->
-<!--                android:layout_toRightOf="@+id/phoneiv"-->
-<!--                android:text="+1 (832) 388-3526"-->
-<!--                android:textColor="#000000"-->
-<!--                android:textSize="5sp" />-->
-<!--        </RelativeLayout>-->
+        <!--            <TextView-->
+        <!--                android:id="@+id/phonetv"-->
+        <!--                android:layout_width="wrap_content"-->
+        <!--                android:layout_height="wrap_content"-->
+        <!--                android:layout_centerVertical="true"-->
+        <!--                android:layout_marginLeft="5dp"-->
+        <!--                android:layout_toRightOf="@+id/phoneiv"-->
+        <!--                android:text="+1 (832) 388-3526"-->
+        <!--                android:textColor="#000000"-->
+        <!--                android:textSize="5sp" />-->
+        <!--        </RelativeLayout>-->
 
 
         <RelativeLayout
@@ -267,9 +272,9 @@
                         android:layout_height="20dp"
                         android:layout_gravity="center"
                         android:gravity="center"
+                        android:minLines="2"
                         android:textColor="#000000"
                         android:textSize="12sp"
-                        android:minLines="2"
                         android:textStyle="bold" />
 
                     <TextView
@@ -282,7 +287,6 @@
                         android:textColor="#000000"
                         android:textSize="10sp" />
                 </LinearLayout>
-
 
 
                 <LinearLayout
@@ -316,17 +320,6 @@
                         android:textColor="#000000"
                         android:textSize="10sp" />
                 </LinearLayout>
-
-
-
-
-
-
-
-
-
-
-
 
 
                 <LinearLayout
@@ -370,29 +363,27 @@
         android:id="@+id/gridrltv"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginRight="5px"
-        android:layout_marginLeft="5px"
-        android:layout_marginBottom="5px"
+
         android:layout_below="@+id/header"
-        >
+        android:background="@color/black">
 
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/lb_tv_white"
-            >
+            android:layout_marginLeft="5px"
+            android:layout_marginRight="5px"
+            android:layout_marginBottom="5px"
+            android:background="@color/black">
+
             <GridView
                 android:id="@+id/gridview"
                 android:layout_width="fill_parent"
                 android:layout_height="fill_parent"
                 android:layout_gravity="fill"
-                android:listSelector="@null"
                 android:fitsSystemWindows="true"
-                android:nestedScrollingEnabled="false"
-                 />
+                android:listSelector="@null"
+                android:nestedScrollingEnabled="false" />
         </RelativeLayout>
 
     </RelativeLayout>
-
-
 </RelativeLayout>

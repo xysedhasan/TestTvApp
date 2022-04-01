@@ -1,16 +1,20 @@
 package com.example.testtvapp.Model;
 
 import android.content.Context;
+import android.graphics.drawable.AnimationDrawable;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.core.content.ContextCompat;
+
 import com.bumptech.glide.Glide;
-import com.example.testtvapp.MainActivity;
 import com.example.testtvapp.R;
 
 import java.util.ArrayList;
@@ -21,11 +25,20 @@ public class GridAdapter extends BaseAdapter {
     ArrayList<Game> arrayList;
     private static final String TAG = "GridAdapter";
     int sizeoflyt;
+    ArrayList<Boolean> animateArray = new ArrayList<>();
+    String orientation;
+    int boxes;
 
-    public GridAdapter(Context context, ArrayList<Game> arrayList) {
+    public GridAdapter(Context context, ArrayList<Game> arrayList, int sizeoflyt, ArrayList<Boolean> animateArray, String orientation, int boxes) {
         this.context = context;
         this.arrayList = arrayList;
+        this.sizeoflyt = sizeoflyt;
+        this.animateArray = animateArray;
+        this.orientation = orientation;
+        this.boxes = boxes;
     }
+
+
 
     public GridAdapter(Context context, ArrayList<Game> arrayList, int sizeoflyt) {
         this.context = context;
@@ -55,15 +68,23 @@ public class GridAdapter extends BaseAdapter {
         }
         ImageView imageView,priceimg;
         TextView imgNumber;
+        RelativeLayout parentlyt;
 
+        parentlyt = (RelativeLayout) convertView.findViewById(R.id.parent);
         imgNumber = (TextView) convertView.findViewById(R.id.imagenumber);
         imageView = (ImageView) convertView.findViewById(R.id.item_image);
         priceimg = (ImageView) convertView.findViewById(R.id.tiketpriceimg);
         int height = context.getResources().getDisplayMetrics().heightPixels;
         Log.d(TAG, "getViewsizeoflyt: "+sizeoflyt);
 
-        if (Prefrences.getOrientation(context) == 0){
-            if (Prefrences.getNumberOfBoxes(context) == 50) {
+        if (orientation.equals("landscape")){
+            if (Prefrences.getNumberOfBoxes(context) == 100) {
+                imageView.getLayoutParams().height = sizeoflyt / 10;
+            }else if (Prefrences.getNumberOfBoxes(context) == 80) {
+                imageView.getLayoutParams().height = sizeoflyt / 8;
+            }else if (Prefrences.getNumberOfBoxes(context) == 65) {
+                imageView.getLayoutParams().height = sizeoflyt / 5;
+            }else if (Prefrences.getNumberOfBoxes(context) == 50) {
                 imageView.getLayoutParams().height = sizeoflyt / 5;
             } else if (Prefrences.getNumberOfBoxes(context) == 32) {
                 imageView.getLayoutParams().height = sizeoflyt / 4;
@@ -72,7 +93,13 @@ public class GridAdapter extends BaseAdapter {
             }
 
         }else {
-            if (Prefrences.getNumberOfBoxes(context) == 50) {
+            if (Prefrences.getNumberOfBoxes(context) == 100) {
+                imageView.getLayoutParams().height = sizeoflyt / 10 ;
+            }else if (Prefrences.getNumberOfBoxes(context) == 80) {
+                imageView.getLayoutParams().height = sizeoflyt / 10 ;
+            }else if (Prefrences.getNumberOfBoxes(context) == 65) {
+                imageView.getLayoutParams().height = sizeoflyt / 13 ;
+            }else if (Prefrences.getNumberOfBoxes(context) == 50) {
                 imageView.getLayoutParams().height = sizeoflyt / 10 ;
             } else if (Prefrences.getNumberOfBoxes(context) == 32) {
                 imageView.getLayoutParams().height = sizeoflyt / 8;
@@ -81,6 +108,27 @@ public class GridAdapter extends BaseAdapter {
             }
 
         }
+
+
+
+        if (position < animateArray.size()){
+            if (animateArray.get(position).booleanValue()){
+                //  parentlyt.setBackgroundResource(R.drawable.gradient_list);
+                // parentlyt.setBackgroundColor(context.getResources().getColor(android.R.color.holo_red_dark));
+                parentlyt.setBackgroundColor(ContextCompat.getColor(context, R.color.red));
+//                AnimationDrawable animationDrawable = (AnimationDrawable) parentlyt.getBackground();
+//                animationDrawable.setEnterFadeDuration(1000);
+//                animationDrawable.setExitFadeDuration(1000);
+//                animationDrawable.start();
+
+                imageView.setPadding(5,5,5,5);
+            }else {
+                parentlyt.setBackgroundResource(0);
+            }
+        }
+
+
+
 
 
         imgNumber.setText(String.valueOf(position + 1));

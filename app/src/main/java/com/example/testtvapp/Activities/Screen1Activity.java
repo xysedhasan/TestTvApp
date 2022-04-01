@@ -1,13 +1,9 @@
-package com.example.testtvapp;
+package com.example.testtvapp.Activities;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentActivity;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
+import androidx.appcompat.app.AppCompatDelegate;
 
 import android.content.Context;
-import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.os.PowerManager;
@@ -19,52 +15,48 @@ import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.GridView;
+import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.testtvapp.Model.AppRepository;
 import com.example.testtvapp.Model.Game;
 import com.example.testtvapp.Model.GridAdapter;
 import com.example.testtvapp.Model.Prefrences;
-import com.example.testtvapp.Model.RecyclerviewAdapter;
+import com.example.testtvapp.Model.Screen1;
+import com.example.testtvapp.Model.UserNew;
+import com.example.testtvapp.R;
 
 import java.util.ArrayList;
 
-public class MainActivity extends FragmentActivity {
+public class Screen1Activity extends AppCompatActivity {
+
     static GridView gridView;
     private static final String TAG = "MainActivity";
     ArrayList<Game> games = new ArrayList<>();
     RelativeLayout logolyt, footerRelative;
     static RelativeLayout gridRelative;
     static int sizeoflyt = 0;
+    static ProgressBar pbar;
     static RelativeLayout headerrltv;
     static RelativeLayout parent;
     TextView powerprice, lottoPrice, megaballPrice, texastwo, pick3, daily4, cashfive, allornothing;
     TextView dypowerprice, dylottoPrice, dymegaballPrice, dytexastwo, dypick3, dydaily4, dycashfive, dyallornothing;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-        getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
-        Display display = ((WindowManager) getSystemService(WINDOW_SERVICE)).getDefaultDisplay();
-        int orientation = display.getOrientation();
-        Prefrences.setOrienation(getApplicationContext(), 1);
+        setContentView(R.layout.activity_screen1);
 
-        if (Prefrences.getOrientation(getApplicationContext()) == 0) {
-            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
-        } else {
-            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
-        }
+        AppCompatDelegate.setCompatVectorFromResourcesEnabled(true);
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 
         PowerManager powerManager = (PowerManager) getSystemService(POWER_SERVICE);
         PowerManager.WakeLock wakeLock = powerManager.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK,
                 "MyApp::MyWakelockTag");
         wakeLock.acquire();
-
-
         init();
-
         int width = getApplicationContext().getResources().getDisplayMetrics().widthPixels;
         int height = getApplicationContext().getResources().getDisplayMetrics().heightPixels;
 
@@ -76,7 +68,14 @@ public class MainActivity extends FragmentActivity {
         rel_btn.addRule(RelativeLayout.ALIGN_PARENT_TOP);
         logolyt.setLayoutParams(rel_btn);
 
-        AppRepository.getGames(this, getApplicationContext());
+        AppRepository.getGames(this, getApplicationContext(), "screen1");
+        AppRepository.getUser(Screen1Activity.this, getApplicationContext(), "screen1", (status, user) -> {
+            if (status) {
+                setTextSizes(user);
+                showHideHeader(user.getScreen1().isShow_header());
+                setBoxes(user.getScreen1().getOrientation(), user.getScreen1().getTotal_boxes());
+            }
+        });
         //item click listner
         gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -98,23 +97,16 @@ public class MainActivity extends FragmentActivity {
 
     }
 
-    //khokhar@2921
-    public static void initrecycler(Context context, ArrayList<Game> games) {
+    public static void initrecycler(Context context, ArrayList<Game> games, ArrayList<Boolean> animateArr,String orientation,int totalboxes  ) {
         gridView.setVerticalScrollBarEnabled(false);
-        if (headerrltv.getVisibility() == View.VISIBLE){
-           sizeoflyt = parent.getHeight() - headerrltv.getHeight() - 5;
-           // sizeoflyt = gridRelative.getHeight();
-        }else {
+        if (headerrltv.getVisibility() == View.VISIBLE) {
+            sizeoflyt = parent.getHeight() - headerrltv.getHeight() - 5;
+        } else {
             sizeoflyt = parent.getHeight() - 5;
         }
-
-        ArrayList<Game> temp = new ArrayList<>();
-        for (int i = 0; i < Prefrences.getNumberOfBoxes(context); i++)
-            temp.add(games.get(i));
-        GridAdapter adpter = new GridAdapter(context, temp, sizeoflyt);
+        GridAdapter adpter = new GridAdapter(context, games, sizeoflyt, animateArr,orientation,totalboxes);
         gridView.setAdapter(adpter);
-        setBoxes(context);
-
+        pbar.setVisibility(View.GONE);
     }
 
     @Override
@@ -124,20 +116,32 @@ public class MainActivity extends FragmentActivity {
     }
 
 
-    public static void setBoxes(Context context) {
+    public   void setBoxes(String screenorientation, int totalboxes) {
 
-        if (Prefrences.getOrientation(context) == 0) {
-            if (Prefrences.getNumberOfBoxes(context) == 50) {
+        if (screenorientation.equals("landscape")) {
+            if (totalboxes == 100) {
                 gridView.setNumColumns(10);
-            } else if (Prefrences.getNumberOfBoxes(context) == 32) {
+            } else if (totalboxes == 80) {
+                gridView.setNumColumns(10);
+            } else if (totalboxes == 65) {
+                gridView.setNumColumns(13);
+            } else if (totalboxes == 50) {
+                gridView.setNumColumns(10);
+            } else if (totalboxes == 32) {
                 gridView.setNumColumns(8);
             } else {
                 gridView.setNumColumns(6);
             }
         } else {
-            if (Prefrences.getNumberOfBoxes(context) == 50) {
+            if (totalboxes == 100) {
+                gridView.setNumColumns(10);
+            } else if (totalboxes == 80) {
+                gridView.setNumColumns(8);
+            } else if (totalboxes == 65) {
                 gridView.setNumColumns(5);
-            } else if (Prefrences.getNumberOfBoxes(context) == 32) {
+            } else if (totalboxes == 50) {
+                gridView.setNumColumns(5);
+            } else if (totalboxes == 32) {
                 gridView.setNumColumns(4);
             } else {
                 gridView.setNumColumns(3);
@@ -147,6 +151,8 @@ public class MainActivity extends FragmentActivity {
     }
 
     private void init() {
+        pbar = findViewById(R.id.pbar);
+        pbar.setVisibility(View.VISIBLE);
         gridView = (GridView) findViewById(R.id.gridview);
         gridRelative = findViewById(R.id.gridrltv);
         footerRelative = findViewById(R.id.bottomrltv);
@@ -172,8 +178,11 @@ public class MainActivity extends FragmentActivity {
         dyallornothing = findViewById(R.id.allornothingday);
 
 
-        if(Prefrences.getOrientation(getApplicationContext()) == 0){
-        }else{
+    }
+
+    private void setTextSizes(UserNew user) {
+        if (user.getScreen1().getOrientation().equals("landscape")) {
+        } else {
             powerprice.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.result_font));
             lottoPrice.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.result_font));
             megaballPrice.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.result_font));
@@ -194,13 +203,14 @@ public class MainActivity extends FragmentActivity {
         }
     }
 
-    public static void showHideHeader(Context context) {
-        if (Prefrences.isShowHeader(context)) {
+    private void showHideHeader(boolean showheader) {
+        if (showheader) {
             headerrltv.setVisibility(View.VISIBLE);
         } else {
             headerrltv.setVisibility(View.GONE);
         }
     }
+
 
     @Override
     protected void onResume() {

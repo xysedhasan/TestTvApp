@@ -33,7 +33,7 @@
             android:layout_height="100dp"
             android:layout_above="@+id/centrerltv"
             android:layout_marginBottom="10dp"
-            android:src="@drawable/logogreen"
+            android:src="@mipmap/beyond"
             android:layout_marginLeft="70dp"
             android:layout_marginRight="70dp"
 
@@ -80,7 +80,7 @@
                 android:layout_width="15dp"
                 android:layout_height="15dp"
                 android:backgroundTint="@color/black"
-                android:src="@drawable/logogreen"
+                android:src="@mipmap/beyond"
                 />
             <TextView
                 android:id="@+id/emailtv"

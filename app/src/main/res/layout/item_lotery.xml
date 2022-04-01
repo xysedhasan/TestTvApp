@@ -1,50 +1,50 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
-
-    <ImageView
-        android:id="@+id/item_image"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:padding="1dp"
-        android:scaleType="fitXY" />
-
-
-
-
-    <ImageView
-        android:id="@+id/tiketpriceimg"
-        android:layout_width="35dp"
-        android:layout_height="35dp"
-        android:src="@drawable/dollarone"
-        android:scaleType="fitXY"
-        android:padding="1dp"
-        />
-
+    android:layout_height="match_parent">
 
     <RelativeLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        >
-        <TextView
-            android:id="@+id/imagenumber"
-            android:layout_width="25dp"
-            android:layout_height="25dp"
-            android:layout_margin="5dp"
+        android:layout_width="match_parent"
+        android:id="@+id/parent"
+        android:layout_height="match_parent">
 
-            android:layout_centerHorizontal="true"
-            android:background="@drawable/circle"
-            android:gravity="center"
-            android:text="20"
-            android:textColor="@color/black"
-            android:textSize="16dp"
-            android:textStyle="bold"
-            />
+
+        <ImageView
+            android:id="@+id/item_image"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:padding="1dp"
+            android:scaleType="fitXY" />
+
+        <ImageView
+            android:id="@+id/tiketpriceimg"
+            android:layout_width="35dp"
+            android:layout_height="35dp"
+            android:padding="1dp"
+            android:scaleType="fitXY"
+            android:src="@drawable/dollarone" />
+
+
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true">
+
+            <TextView
+                android:id="@+id/imagenumber"
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:layout_centerHorizontal="true"
+                android:layout_margin="5dp"
+                android:background="@drawable/circle"
+                android:gravity="center"
+                android:text="14sp"
+                android:textColor="@color/black"
+                android:textSize="10sp"
+                android:textStyle="bold" />
+        </RelativeLayout>
     </RelativeLayout>
-
 
 </RelativeLayout>

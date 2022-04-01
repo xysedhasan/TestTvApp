@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="20dp"
+    android:background="@color/graybg"
+    tools:context=".Activities.ChooseScreenActivity">
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="50dp">
+
+        <TextView
+            android:id="@+id/text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Choose a Screen to display on your TV"
+            android:textColor="#ffffff"
+            android:layout_marginTop="20dp"
+            android:layout_margin="10dp"
+            android:textSize="20sp" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/text"
+            android:layout_marginTop="20dp"
+            android:weightSum="5">
+
+            <Button
+                android:id="@+id/rltvscreen1"
+                android:nextFocusRight="@id/rltvscreen2"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:layout_weight="1"
+                android:layout_margin="10dp"
+                android:background="@drawable/button1hover"
+                />
+
+
+
+
+            <Button
+                android:id="@+id/rltvscreen2"
+
+                android:nextFocusRight="@id/rltvscreen3"
+                android:nextFocusLeft="@id/rltvscreen1"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:layout_weight="1"
+                android:layout_margin="10dp"
+                android:background="@drawable/button2hover">
+            </Button>
+
+
+
+
+            <Button
+                android:id="@+id/rltvscreen3"
+                android:nextFocusLeft="@id/rltvscreen2"
+                android:nextFocusRight="@id/rltvscreen4"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:layout_weight="1"
+                android:layout_margin="10dp"
+                android:background="@drawable/button3hover">
+
+            </Button>
+
+
+
+            <Button
+                android:id="@+id/rltvscreen4"
+                android:nextFocusLeft="@id/rltvscreen3"
+                android:nextFocusRight="@id/rltvscreen5"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:layout_weight="1"
+                android:layout_margin="10dp"
+                android:background="@drawable/button4hover">
+
+            </Button>
+
+
+
+            <Button
+                android:id="@+id/rltvscreen5"
+                android:nextFocusLeft="@id/rltvscreen4"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:layout_weight="1"
+                android:layout_margin="10dp"
+                android:background="@drawable/button5hover">
+            </Button>
+
+        </LinearLayout>
+
+
+    </RelativeLayout>
+
+</RelativeLayout>
