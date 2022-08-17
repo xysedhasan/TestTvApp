@@ -7,12 +7,57 @@
   "client": [
     {
       "client_info": {
+        "mobilesdk_app_id": "1:399583310408:android:4458e487a4948970a35e7d",
+        "android_client_info": {
+          "package_name": "com.app.beyondlotto"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "399583310408-mpjhmvd8o037cajbq6de7o9isljc82tt.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.app.beyondlotto",
+            "certificate_hash": "3042c6a9b6d1a02036ec03133d52a6f8cf8148ee"
+          }
+        },
+        {
+          "client_id": "399583310408-vlrdvf672hi8kipt3di924pkkn3lhcon.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDBGOkIzqQA1H-M22j8qV1fhCE68wqhAPg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "399583310408-vlrdvf672hi8kipt3di924pkkn3lhcon.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
         "mobilesdk_app_id": "1:399583310408:android:5699b1138ebe5958a35e7d",
         "android_client_info": {
           "package_name": "com.example.testtvapp"
         }
       },
       "oauth_client": [
+        {
+          "client_id": "399583310408-v1gmd24387ghb0l1qgnrm2q0ibev8mqu.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.testtvapp",
+            "certificate_hash": "3042c6a9b6d1a02036ec03133d52a6f8cf8148ee"
+          }
+        },
         {
           "client_id": "399583310408-vlrdvf672hi8kipt3di924pkkn3lhcon.apps.googleusercontent.com",
           "client_type": 3

@@ -31,6 +31,7 @@
             android:weightSum="5">
 
             <Button
+                android:visibility="gone"
                 android:id="@+id/rltvscreen1"
                 android:nextFocusRight="@id/rltvscreen2"
                 android:layout_width="100dp"
@@ -45,7 +46,7 @@
 
             <Button
                 android:id="@+id/rltvscreen2"
-
+                android:visibility="gone"
                 android:nextFocusRight="@id/rltvscreen3"
                 android:nextFocusLeft="@id/rltvscreen1"
                 android:layout_width="100dp"
@@ -60,6 +61,7 @@
 
             <Button
                 android:id="@+id/rltvscreen3"
+                android:visibility="gone"
                 android:nextFocusLeft="@id/rltvscreen2"
                 android:nextFocusRight="@id/rltvscreen4"
                 android:layout_width="100dp"
@@ -74,6 +76,7 @@
 
             <Button
                 android:id="@+id/rltvscreen4"
+                android:visibility="gone"
                 android:nextFocusLeft="@id/rltvscreen3"
                 android:nextFocusRight="@id/rltvscreen5"
                 android:layout_width="100dp"
@@ -88,6 +91,7 @@
 
             <Button
                 android:id="@+id/rltvscreen5"
+                android:visibility="gone"
                 android:nextFocusLeft="@id/rltvscreen4"
                 android:layout_width="100dp"
                 android:layout_height="100dp"

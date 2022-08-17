@@ -16,8 +16,21 @@
 
     <ImageView
         android:id="@+id/imagev"
+        android:visibility="gone"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:scaleType="fitXY"
         />
+
+    <VideoView
+        android:id="@+id/myvideoview"
+        android:visibility="gone"
+        android:layout_width="fill_parent"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentBottom="true"
+        android:layout_height="fill_parent">
+
+    </VideoView>
 </RelativeLayout>

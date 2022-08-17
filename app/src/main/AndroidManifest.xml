@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    package="com.example.testtvapp">
+    package="com.app.beyondlotto">
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.WAKE_LOCK" />
@@ -15,29 +15,52 @@
 
     <application
         android:allowBackup="true"
-        android:icon="@mipmap/logo"
+        android:icon="@mipmap/beyond"
+        android:banner="@mipmap/beyond"
+        android:roundIcon="@mipmap/beyond"
         android:label="@string/app_name"
         android:supportsRtl="true"
+        android:largeHeap="true"
+        android:usesCleartextTraffic="true"
+        android:requestLegacyExternalStorage="true"
         android:theme="@style/Theme.Leanback.VerticalGrid">
-        <activity android:name=".Activities.Screen5Activity"
+        <activity android:name="com.app.beyondlotto.Activities.Screen1VerticalActivity"
+            android:configChanges="orientation|screenSize|screenLayout|keyboardHidden"
             android:theme="@style/Theme.AppCompat"></activity>
-        <activity android:name=".Activities.Screen4Activity"
-            android:theme="@style/Theme.AppCompat"/>
-        <activity android:name=".Activities.Screen3Activity"
-            android:theme="@style/Theme.AppCompat"/>
-        <activity android:name=".Activities.Screen2Activity"
-            android:theme="@style/Theme.AppCompat"/>
-        <activity android:name=".Activities.Screen1Activity"
-            android:theme="@style/Theme.AppCompat"/>
+
         <activity
-            android:name=".Activities.ChooseScreenActivity"
+            android:name="com.app.beyondlotto.Activities.Screen5Activity"
+            android:configChanges="orientation|screenSize|screenLayout|keyboardHidden"
             android:theme="@style/Theme.AppCompat" />
         <activity
-            android:name=".Activities.LoginActivity"
+            android:name="com.app.beyondlotto.Activities.Screen4Activity"
+            android:configChanges="orientation|screenSize|screenLayout|keyboardHidden"
+            android:theme="@style/Theme.AppCompat" />
+        <activity
+            android:name="com.app.beyondlotto.Activities.Screen3Activity"
+            android:configChanges="orientation|screenSize|screenLayout|keyboardHidden"
+            android:theme="@style/Theme.AppCompat" />
+
+        <activity
+            android:name="com.app.beyondlotto.Activities.Screen2Activity"
+            android:configChanges="orientation|screenSize|screenLayout|keyboardHidden"
+            android:theme="@style/Theme.AppCompat" />
+
+        <activity
+            android:name="com.app.beyondlotto.Activities.Screen1Activity"
+            android:configChanges="orientation|screenSize|screenLayout|keyboardHidden"
+            android:theme="@style/Theme.AppCompat" />
+
+        <activity
+            android:name="com.app.beyondlotto.Activities.ChooseScreenActivity"
+            android:theme="@style/Theme.AppCompat" />
+        <activity
+            android:name="com.app.beyondlotto.Activities.LoginActivity"
             android:banner="@mipmap/beyond"
             android:icon="@mipmap/beyond"
             android:label="@string/app_name"
             android:logo="@mipmap/beyond"
+            android:roundIcon="@mipmap/beyond"
             android:screenOrientation="landscape"
             android:theme="@style/Theme.AppCompat">
             <intent-filter>
@@ -46,14 +69,7 @@
                 <category android:name="android.intent.category.LEANBACK_LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity
-            android:name=".Activities.MainActivity"
-            android:banner="@color/greenappcolor"
-            android:icon="@color/greenappcolor"
-            android:label="@string/app_name"
-            android:logo="@color/greenappcolor"
 
-            android:screenOrientation="landscape" />
     </application>
 
 </manifest>

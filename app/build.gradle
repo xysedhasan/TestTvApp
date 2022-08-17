@@ -7,12 +7,15 @@ android {
     compileSdkVersion 30
     buildToolsVersion "30.0.3"
 
+    //pass:beyond12345
+    //alias:key0
+
     defaultConfig {
-        applicationId "com.example.testtvapp"
+        applicationId "com.app.beyondlotto"
         minSdkVersion 21
         targetSdkVersion 30
-        versionCode 1
-        versionName "1.0"
+        versionCode 8
+        versionName "1.0.5"
         multiDexEnabled true
         vectorDrawables.useSupportLibrary = true
 
