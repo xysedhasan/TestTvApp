@@ -72,7 +72,7 @@ public class AppRepository {
                 .document(current).update("login_status", true);
     }
 
-    public static void getGames(Activity activity, Context context, String screenNo, BiConsumer<Boolean, String> callback) {
+    public static void getGames(Context context) {
 
         db.collection("games").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @RequiresApi(api = Build.VERSION_CODES.N)
@@ -84,19 +84,14 @@ public class AppRepository {
                         Game game = document.toObject(Game.class);
                         gamesarr.add(game);
                     }
+
                     Prefrences.setGamesListInLocal(context, gamesarr, "games");
-                    callback.accept(true, "");
-                    // getUser(activity, context, screenNo);
-                } else {
-                    callback.accept(false, "Something went Wrong!");
-                    //  Log.w(TAG, "Error getting documents.", task.getException());
                 }
             }
         }).addOnFailureListener(new OnFailureListener() {
             @RequiresApi(api = Build.VERSION_CODES.N)
             @Override
             public void onFailure(@NonNull Exception e) {
-                callback.accept(false, e.toString());
                 //Toast.makeText(context, e.toString(), Toast.LENGTH_SHORT).show();
             }
         });
@@ -154,6 +149,8 @@ public class AppRepository {
                 for (int i = 0; i < totalbox; i++) {
                     temp.add("null");
                     tempAnimation.add(false);
+                    animatearr.add(false);
+                    gamesimages.add(null);
                 }
 
                 for (int i = 0; i < user.getScreen1().getArray_for_boxes().size(); i++) {
@@ -169,30 +166,63 @@ public class AppRepository {
                                 gamesimages.add(i, game);
                                 break;
                             } else {
-                                 gamesimages.add(i, null);
+                                gamesimages.add(i, null);
                             }
                         }
                     } else {
-                         gamesimages.add(i, null);
+                        gamesimages.add(i, null);
                     }
                 }
 
                 //assigning data temp animation array
-                for (int i = 0; i < user.getScreen1().getAnimation_for_boxes().size(); i++) {
-                    tempAnimation.set(i, user.getScreen1().getAnimation_for_boxes().get(i));
+                for (int i = 0; i < totalbox; i++) {
+
+                    if (user.getScreen1().getAnimation_for_boxes().size() > i) {
+                        if (user.getScreen1().getAnimation_for_boxes().get(i) != null) {
+                            tempAnimation.set(i, user.getScreen1().getAnimation_for_boxes().get(i));
+                        } else {
+                            tempAnimation.set(i, false);
+                        }
+                    } else {
+                        tempAnimation.set(i, false);
+                    }
+
                 }
 
                 //assigning data to orignal array from temp array
                 for (int i = 0; i < totalbox; i++) {
-                    if (user.getScreen1().getAnimation_for_boxes() != null) {
-                        animatearr.add(i, tempAnimation.get(i));
+                    if (user.getScreen1() != null) {
+                        if (user.getScreen1().getAnimation_for_boxes() != null) {
+                            try {
+                                animatearr.add(i, user.getScreen1().getAnimation_for_boxes().get(i));
+                            } catch (Exception e) {
+                                animatearr.add(i, false);
+                            }
+                        } else {
+                            animatearr.add(i, false);
+                        }
                     } else {
                         animatearr.add(i, false);
                     }
                 }
 
-            } else {
 
+//                for (int i = 0; i < totalbox; i++) {
+//                    if (user.getScreen1().getAnimation_for_boxes() != null) {
+//                        animatearr.add(i, tempAnimation.get(i));
+//                    } else {
+//                        animatearr.add(i, false);
+//                    }
+//                }
+
+
+            } else {
+                for (int i = 0; i < totalbox; i++) {
+                    temp.add("null");
+                    tempAnimation.add(false);
+                    animatearr.add(false);
+                    gamesimages.add(null);
+                }
                 for (int i = 0; i < totalbox; i++) {
                     String gameNumber = "";
                     if (user.getScreen1().getArray_for_boxes().get(i) != null && !user.getScreen1().getArray_for_boxes().get(i).contains("null")) {
@@ -203,7 +233,7 @@ public class AppRepository {
                                     gamesimages.add(i, game);
                                     break;
                                 } else {
-                                     gamesimages.add(i, null);
+                                    gamesimages.add(i, null);
                                 }
                             }
                         }
@@ -214,12 +244,23 @@ public class AppRepository {
 //                    }
                 }
 
-
-                user.getScreen1().getTotal_boxes();
+                // user.getScreen1().getTotal_boxes();
                 //assigning data to orignal array from temp array
                 for (int i = 0; i < totalbox; i++) {
-                    if (user.getScreen1().getAnimation_for_boxes() != null) {
-                        animatearr.add(i, user.getScreen1().getAnimation_for_boxes().get(i));
+                    if (user.getScreen1() != null) {
+                        if (user.getScreen1().getAnimation_for_boxes() != null) {
+                            try {
+                                if (user.getScreen1().getAnimation_for_boxes().size() > i) {
+                                    animatearr.add(i, user.getScreen1().getAnimation_for_boxes().get(i));
+                                }else {
+                                    animatearr.add(i, false);
+                                }
+                            } catch (Exception e) {
+                                animatearr.add(i, false);
+                            }
+                        } else {
+                            animatearr.add(i, false);
+                        }
                     } else {
                         animatearr.add(i, false);
                     }
@@ -236,7 +277,6 @@ public class AppRepository {
             Screen1Activity.initrecycler(context, gamestemp, animatearr, user.getScreen1().isShow_header(), user.getScreen1().getOrientation(), user.getScreen1().getTotal_boxes(), user.getScreen1().getEmpty_box(), user.getScreen1().getEmpty_box_custom_image());
         } else if (screenNo.equals("screen2")) {
             activity.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
-
             int totalbox = user.getScreen2().getTotal_boxes();
             ArrayList<String> temp = new ArrayList<>();
             ArrayList<Boolean> tempAnimation = new ArrayList<>();
@@ -244,6 +284,8 @@ public class AppRepository {
                 for (int i = 0; i < totalbox; i++) {
                     temp.add("null");
                     tempAnimation.add(false);
+                    animatearr.add(false);
+                    gamesimages.add(null);
                 }
 
                 for (int i = 0; i < user.getScreen2().getArray_for_boxes().size(); i++) {
@@ -269,19 +311,32 @@ public class AppRepository {
 //
                 //assigning data temp animation array
                 for (int i = 0; i < user.getScreen2().getAnimation_for_boxes().size(); i++) {
+
                     tempAnimation.set(i, user.getScreen2().getAnimation_for_boxes().get(i));
                 }
 
                 //assigning data to orignal array from temp array
                 for (int i = 0; i < totalbox; i++) {
+
                     if (user.getScreen2().getAnimation_for_boxes() != null) {
-                        animatearr.add(i, tempAnimation.get(i));
+                        if (user.getScreen2().getAnimation_for_boxes().size() > i) {
+                            animatearr.add(i, tempAnimation.get(i));
+                        }else {
+                            animatearr.add(i, false);
+                        }
+
                     } else {
                         animatearr.add(i, false);
                     }
                 }
 
             } else {
+                for (int i = 0; i < totalbox; i++) {
+                    temp.add("null");
+                    tempAnimation.add(false);
+                    animatearr.add(false);
+                    gamesimages.add(null);
+                }
                 for (int i = 0; i < totalbox; i++) {
                     String gameNumber = "";
                     if (user.getScreen2().getArray_for_boxes().get(i) != null && !user.getScreen2().getArray_for_boxes().get(i).contains("null")) {
@@ -302,7 +357,12 @@ public class AppRepository {
                 //assigning data to orignal array from temp array
                 for (int i = 0; i < totalbox; i++) {
                     if (user.getScreen2().getAnimation_for_boxes() != null) {
-                        animatearr.add(i, user.getScreen2().getAnimation_for_boxes().get(i));
+                        if (user.getScreen2().getAnimation_for_boxes().size() > i) {
+                            animatearr.add(i, user.getScreen2().getAnimation_for_boxes().get(i));
+                        }else {
+                            animatearr.add(i, false);
+                        }
+
                     } else {
                         animatearr.add(i, false);
                     }
@@ -366,7 +426,7 @@ public class AppRepository {
     }
 
 
-    @RequiresApi(api = Build.VERSION_CODES.N)
+    /*@RequiresApi(api = Build.VERSION_CODES.N)
     public static void getGame(ArrayList<String> numberarr, BiConsumer<Boolean, ArrayList<Game>> callback) {
         ArrayList<Game> gamesarr = new ArrayList<>();
         for (String number : numberarr) {
@@ -397,7 +457,7 @@ public class AppRepository {
                 });
             }
         }
-    }
+    }*/
 
 
     public static void getGlobalPrices(Context context, BiConsumer<GlobalPrices, Boolean> callback) {

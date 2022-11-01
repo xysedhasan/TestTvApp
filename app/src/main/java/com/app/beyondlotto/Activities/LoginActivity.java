@@ -18,30 +18,24 @@ import android.widget.Toast;
 import com.app.beyondlotto.Model.AppRepository;
 import com.app.beyondlotto.Model.Prefrences;
 import com.app.beyondlotto.R;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.AuthResult;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.firestore.FirebaseFirestore;
+
+
 
 public class LoginActivity extends AppCompatActivity {
 
-
     Button submit;
     EditText emaiEt, passwordEt;
-    String email, password;
-    FirebaseAuth firebaseAuth;
     ProgressBar pbar;
+
     private static final String TAG = "LoginActivity";
-    FirebaseFirestore db = FirebaseFirestore.getInstance();
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+
         init();
-
-
         submit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -61,23 +55,27 @@ public class LoginActivity extends AppCompatActivity {
             passwordEt.setError("Password required");
             return;
         }
-        email = emaiEt.getText().toString();
-        password = passwordEt.getText().toString();
-        loginuser(email, password);
+
+        loginuser(emaiEt.getText().toString(), passwordEt.getText().toString());
     }
 
     private void loginuser(String email, String password) {
         pbar.setVisibility(View.VISIBLE);
         AppRepository.login(getApplicationContext(), email, password, (status, err) -> {
-            pbar.setVisibility(View.GONE);
-            if (status) {
-                AppRepository.updatelogin();
-                Prefrences.setisLoggedin(getApplicationContext(), true);
-                Intent intent = new Intent(LoginActivity.this, ChooseScreenActivity.class);
-                startActivity(intent);
-            } else {
-                Toast.makeText(this, err, Toast.LENGTH_SHORT).show();
-            }
+            this.runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    pbar.setVisibility(View.GONE);
+                    if (status) {
+                        AppRepository.updatelogin();
+                        Prefrences.setisLoggedin(getApplicationContext(), true);
+                        Intent intent = new Intent(LoginActivity.this, ChooseScreenActivity.class);
+                        startActivity(intent);
+                    } else {
+                        Toast.makeText(LoginActivity.this, err, Toast.LENGTH_SHORT).show();
+                    }
+                }
+            });
         });
     }
 
@@ -86,7 +84,7 @@ public class LoginActivity extends AppCompatActivity {
             Intent intent = new Intent(LoginActivity.this, ChooseScreenActivity.class);
             startActivity(intent);
         }
-        firebaseAuth = FirebaseAuth.getInstance();
+
         submit = findViewById(R.id.continuerltv);
         emaiEt = findViewById(R.id.emailet);
         passwordEt = findViewById(R.id.passwordet);

@@ -9,7 +9,8 @@
     <color name="graytext">#808080</color>
     <color name="graybg">#141414</color>
     <color name="white">#ffffff</color>
-    <color name="greenappcolor">#89ff57</color>
+    <color name="greenappcolor">#1AA029</color>
+    <color name="greenappcolorlight">#33AA40</color>
     <color name="red">#FF0000</color>
 
     <color name="pink">#FFB6C1</color>

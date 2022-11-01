@@ -9,7 +9,9 @@ import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.PowerManager;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.MediaController;
 import android.widget.ProgressBar;
@@ -27,7 +29,7 @@ public class Screen3Activity extends AppCompatActivity {
     private VideoView mVideoView;
     private ProgressDialog progDailog;
     ProgressDialog progressDialog=null;
-      ImageView imageView;
+    ImageView imageView;
     VideoView videoView;
     ProgressBar pbar;
     @RequiresApi(api = Build.VERSION_CODES.N)
@@ -35,20 +37,10 @@ public class Screen3Activity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_screen3);
-        init();
-        AppRepository.getUser(this, getApplicationContext(),"screen3",(status,user)->{
-            if (status){
-                AppRepository.getGamesofUser(this, user, getApplicationContext(), "screen3",(type,img)->{
-                    if (type != null && img != null){
-                        setMediaData(Screen3Activity.this, type, img, "");
-                    }else {
-                        Toast.makeText(this, "No Data found!", Toast.LENGTH_SHORT).show();
-                        pbar.setVisibility(View.GONE);
-                    }
 
-                });
-            }
-        });
+        init();
+        keepScreenAwake();
+        getSetUserData();
 
 //        mVideoView = (VideoView) findViewById(R.id.video);
 //        path = "http://clips.vorwaerts-gmbh.de/big_buck_bunny.mp4";
@@ -106,7 +98,29 @@ public class Screen3Activity extends AppCompatActivity {
         imageView = findViewById(R.id.imagev);
         pbar = findViewById(R.id.pbar);
     }
-    public   void setMediaData(Context context, String type,String img,String orientation) {
+
+    private void getSetUserData(){
+        AppRepository.getUser(this, getApplicationContext(),"screen3",(status,user)->{
+            if (status){
+                AppRepository.getGamesofUser(this, user, getApplicationContext(), "screen3",(type,img)->{
+                    this.runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            if (type != null && img != null){
+                                setMediaData(Screen3Activity.this, type, img, "");
+                            }else {
+                                Toast.makeText(Screen3Activity.this, "No Data found!", Toast.LENGTH_SHORT).show();
+                                pbar.setVisibility(View.GONE);
+                            }
+                        }
+                    });
+                });
+            }
+        });
+    }
+
+
+    public void setMediaData(Context context, String type,String img,String orientation) {
         pbar.setVisibility(View.GONE);
         if (type != null){
             if (type.equals("image")){
@@ -132,5 +146,14 @@ public class Screen3Activity extends AppCompatActivity {
             }
         }
 
+    }
+
+    public void keepScreenAwake(){
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+
+        PowerManager powerManager = (PowerManager) getSystemService(POWER_SERVICE);
+        PowerManager.WakeLock wakeLock = powerManager.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK,
+                "MyApp::MyWakelockTag");
+        wakeLock.acquire();
     }
 }

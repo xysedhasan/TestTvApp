@@ -8,8 +8,10 @@ import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.PowerManager;
 import android.util.Log;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.MediaController;
 import android.widget.ProgressBar;
@@ -31,20 +33,10 @@ public class Screen5Activity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_screen5);
-        init();
-        AppRepository.getUser(this, getApplicationContext(), "screen5", (status, user) -> {
-            if (status) {
-                AppRepository.getGamesofUser(this, user, getApplicationContext(), "screen5", (type, img) -> {
-                    if (type != null && img != null) {
-                        setMediaData(Screen5Activity.this, type, img, "");
-                    } else {
-                        Toast.makeText(this, "No Data found!", Toast.LENGTH_SHORT).show();
-                        pbar.setVisibility(View.GONE);
-                    }
-                });
-            }
-        });
 
+        init();
+        keepScreenAwake();
+        getSetUserData();
     }
 
     private void init() {
@@ -52,6 +44,27 @@ public class Screen5Activity extends AppCompatActivity {
         pbar = findViewById(R.id.pbar);
         pbar.setVisibility(View.VISIBLE);
         videoView = (VideoView) findViewById(R.id.myvideoview);
+    }
+
+    private void getSetUserData(){
+        AppRepository.getUser(this, getApplicationContext(), "screen5", (status, user) -> {
+            if (status) {
+                AppRepository.getGamesofUser(this, user, getApplicationContext(), "screen5", (type, img) -> {
+
+                    this.runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            if (type != null && img != null) {
+                                setMediaData(Screen5Activity.this, type, img, "");
+                            } else {
+                                Toast.makeText(Screen5Activity.this, "No Data found!", Toast.LENGTH_SHORT).show();
+                                pbar.setVisibility(View.GONE);
+                            }
+                        }
+                    });
+                });
+            }
+        });
     }
 
     private void setMediaData(Context context, String type, String img, String orientation) {
@@ -79,5 +92,14 @@ public class Screen5Activity extends AppCompatActivity {
                 });
             }
         }
+    }
+
+    public void keepScreenAwake(){
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+
+        PowerManager powerManager = (PowerManager) getSystemService(POWER_SERVICE);
+        PowerManager.WakeLock wakeLock = powerManager.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK,
+                "MyApp::MyWakelockTag");
+        wakeLock.acquire();
     }
 }

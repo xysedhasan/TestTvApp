@@ -33,7 +33,6 @@ public class Screen1Activity extends AppCompatActivity {
 
     static GridView gridView;
     private static final String TAG = "MainActivity";
-    ArrayList<Game> games = new ArrayList<>();
     RelativeLayout logolyt, footerRelative;
     static RelativeLayout gridRelative;
     static int sizeoflyt = 0;
@@ -50,51 +49,11 @@ public class Screen1Activity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_screen1);
 
-
-        getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
-        //      Display display = ((WindowManager) getSystemService(WINDOW_SERVICE)).getDefaultDisplay();
-//        int orientation = display.getOrientation();
-//        Prefrences.setOrienation(getApplicationContext(), orientation);
-
-//        if (Prefrences.getOrientation(getApplicationContext()).equals("landscape")) {
- //            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
-//        } else {
-//            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
-//        }
-
-        PowerManager powerManager = (PowerManager) getSystemService(POWER_SERVICE);
-        PowerManager.WakeLock wakeLock = powerManager.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK,
-                "MyApp::MyWakelockTag");
-        wakeLock.acquire();
-
         init();
-
-        int width = getApplicationContext().getResources().getDisplayMetrics().widthPixels;
-        int height = getApplicationContext().getResources().getDisplayMetrics().heightPixels;
-
-
-        gridView.setVerticalScrollBarEnabled(false);
-        gridView.setStretchMode(GridView.STRETCH_COLUMN_WIDTH);
-        RelativeLayout.LayoutParams rel_btn = new RelativeLayout.LayoutParams(
-                ViewGroup.LayoutParams.WRAP_CONTENT, height / 6);
-        rel_btn.addRule(RelativeLayout.ALIGN_PARENT_TOP);
-        logolyt.setLayoutParams(rel_btn);
-
-        AppRepository.getGames(this, getApplicationContext(), "screen1",(status2,err)->{
-            if (status2){
-                AppRepository.getUser(Screen1Activity.this, Screen1Activity.this, "screen1", (status, user) -> {
-                    if (status) {
-                        AppRepository.getGamesofUser(this, user, getApplicationContext(), "screen1",(type,img)->{
-
-                        });
-                        showHideHeader(user.getScreen1().isShow_header());
-                        setBoxes(user.getScreen1().getOrientation(), user.getScreen1().getTotal_boxes());
-                    }
-                });
-            }else {
-                Toast.makeText(this, err, Toast.LENGTH_SHORT).show();
-            }
-        });
+        keepScreenAwake();
+        setUpGridView();
+        getSetGlobalPrices();
+        getSetUserData();
 
         //item click listner
         gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -102,22 +61,54 @@ public class Screen1Activity extends AppCompatActivity {
             public void onItemClick(AdapterView parent, View view, int position, long id) {
             }
         });
-        AppRepository.getGlobalPrices(getApplicationContext(),(prices, status)->{
-            if (status){
-                powerprice.setText(prices.getPower_ball());
-                lottoPrice.setText(prices.getTexas_loto());
-                megaballPrice.setText(prices.getMega_ball());
-                texastwo.setText(prices.getTexas_two_step());
-                pick3.setText(prices.getPick_3());
-                daily4.setText(prices.getDaily_4());
-                cashfive.setText(prices.getCash_five());
-                allornothing.setText(prices.getAll_or_nothing());
+    }
+
+    private void setUpGridView(){
+        int height = getApplicationContext().getResources().getDisplayMetrics().heightPixels;
+        gridView.setVerticalScrollBarEnabled(false);
+        gridView.setStretchMode(GridView.STRETCH_COLUMN_WIDTH);
+        RelativeLayout.LayoutParams rel_btn = new RelativeLayout.LayoutParams(
+                ViewGroup.LayoutParams.WRAP_CONTENT, height / 6);
+        rel_btn.addRule(RelativeLayout.ALIGN_PARENT_TOP);
+        logolyt.setLayoutParams(rel_btn);
+    }
+
+    private  void getSetUserData(){
+        AppRepository.getUser(Screen1Activity.this, Screen1Activity.this, "screen1", (status, user) -> {
+            if (status) {
+                AppRepository.getGamesofUser(this, user, getApplicationContext(), "screen1",(type,img)->{
+
+                });
+                this.runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        showHideHeader(user.getScreen1().isShow_header());
+                        setBoxes(user.getScreen1().getTotal_boxes());
+                    }
+                });
             }
         });
-
-        // showHideHeader(getApplicationContext());
-
     }
+
+    private void getSetGlobalPrices(){
+        AppRepository.getGlobalPrices(getApplicationContext(),(prices, status)->{
+            if (status){
+                this.runOnUiThread(new Runnable() {
+                    public void run() {
+                        powerprice.setText(prices.getPower_ball());
+                        lottoPrice.setText(prices.getTexas_loto());
+                        megaballPrice.setText(prices.getMega_ball());
+                        texastwo.setText(prices.getTexas_two_step());
+                        pick3.setText(prices.getPick_3());
+                        daily4.setText(prices.getDaily_4());
+                        cashfive.setText(prices.getCash_five());
+                        allornothing.setText(prices.getAll_or_nothing());
+                    }
+                });
+            }
+        });
+    }
+
 
     //khokhar@2921
     public static void initrecycler(Context context, ArrayList<Game> games, ArrayList<Boolean> animateArr,Boolean showheader,String orientation,int boxes,String empty_box,String imageurl  ) {
@@ -139,39 +130,25 @@ public class Screen1Activity extends AppCompatActivity {
         super.onBackPressed();
     }
 
+    public void keepScreenAwake(){
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 
-    public void setBoxes(String screenorientation, int totalboxes) {
+        PowerManager powerManager = (PowerManager) getSystemService(POWER_SERVICE);
+        PowerManager.WakeLock wakeLock = powerManager.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK,
+                "MyApp::MyWakelockTag");
+        wakeLock.acquire();
+    }
 
-//        if (screenorientation.equals("landscape")) {
-        if (totalboxes == 100) {
+    public void setBoxes(int totalboxes) {
+        if (totalboxes == 100 || totalboxes == 80 || totalboxes == 50) {
             gridView.setNumColumns(10);
-        } else if (totalboxes == 80) {
-            gridView.setNumColumns(10);
-        } else if (totalboxes == 65) {
+        }else if (totalboxes == 65) {
             gridView.setNumColumns(13);
-        } else if (totalboxes == 50) {
-            gridView.setNumColumns(10);
-        } else if (totalboxes == 32) {
+        }else if (totalboxes == 32) {
             gridView.setNumColumns(8);
         } else {
             gridView.setNumColumns(6);
         }
-//        } else {
-//            if (totalboxes == 100) {
-//                gridView.setNumColumns(10);
-//            } else if (totalboxes == 80) {
-//                gridView.setNumColumns(8);
-//            } else if (totalboxes == 65) {
-//                gridView.setNumColumns(5);
-//            } else if (totalboxes == 50) {
-//                gridView.setNumColumns(5);
-//            } else if (totalboxes == 32) {
-//                gridView.setNumColumns(4);
-//            } else {
-//                gridView.setNumColumns(3);
-//            }
-//        }
-
     }
 
     private void init() {
@@ -200,32 +177,7 @@ public class Screen1Activity extends AppCompatActivity {
         dydaily4 = findViewById(R.id.daily4day);
         dycashfive = findViewById(R.id.cash_fiveday);
         dyallornothing = findViewById(R.id.allornothingday);
-
-
     }
-
-//    private void setTextSizes(UserNew user) {
-//        if (user.getScreen1().getOrientation().equals("landscape")) {
-//        } else {
-////            powerprice.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.result_font));
-////            lottoPrice.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.result_font));
-////            megaballPrice.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.result_font));
-////            texastwo.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.result_font));
-////            pick3.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.result_font));
-////            daily4.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.result_font));
-////            cashfive.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.result_font));
-////            allornothing.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.result_font));
-////
-////            dypowerprice.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.result_fonttwo));
-////            dylottoPrice.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.result_fonttwo));
-////            dymegaballPrice.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.result_fonttwo));
-////            dytexastwo.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.result_fonttwo));
-////            dypick3.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.result_fonttwo));
-////            dydaily4.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.result_fonttwo));
-////            dycashfive.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.result_fonttwo));
-////            dyallornothing.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.result_fonttwo));
-//        }
-//    }
 
     public void showHideHeader(boolean showheader) {
         if (showheader) {
@@ -238,6 +190,5 @@ public class Screen1Activity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-
     }
 }

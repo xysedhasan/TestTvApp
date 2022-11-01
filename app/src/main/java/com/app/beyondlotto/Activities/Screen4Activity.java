@@ -8,7 +8,9 @@ import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.PowerManager;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.MediaController;
 import android.widget.ProgressBar;
@@ -28,25 +30,40 @@ public class Screen4Activity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_screen4);
-        imageView = findViewById(R.id.imagev);
-        videoView = (VideoView) findViewById(R.id.myvideoview);
-        pbar = findViewById(R.id.pbar);
-        pbar.setVisibility(View.VISIBLE);
+
+        init();
+        keepScreenAwake();
+        getSetUserData();
+    }
+
+    private void getSetUserData() {
         AppRepository.getUser(this, getApplicationContext(),"screen4",(status,user)->{
             if (status){
                 AppRepository.getGamesofUser(this, user, getApplicationContext(), "screen4",(type,img)->{
-                    if (type != null && img != null){
-                        setMediaData(Screen4Activity.this, type, img, "");
-                    }else {
-                        Toast.makeText(this, "No Data found!", Toast.LENGTH_SHORT).show();
-                        pbar.setVisibility(View.GONE);
-                    }
+                    this.runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            if (type != null && img != null){
+                                setMediaData(Screen4Activity.this, type, img, "");
+                            }else {
+                                Toast.makeText(Screen4Activity.this, "No Data found!", Toast.LENGTH_SHORT).show();
+                                pbar.setVisibility(View.GONE);
+                            }
+                        }
+                    });
                 });
             }
         });
     }
 
-    public   void setMediaData(Context context, String type, String img, String orientation) {
+    private void init() {
+        imageView = findViewById(R.id.imagev);
+        videoView = (VideoView) findViewById(R.id.myvideoview);
+        pbar = findViewById(R.id.pbar);
+        pbar.setVisibility(View.VISIBLE);
+    }
+
+    public void setMediaData(Context context, String type, String img, String orientation) {
         pbar.setVisibility(View.GONE);
         if (type != null){
             if (type.equals("image")){
@@ -70,6 +87,13 @@ public class Screen4Activity extends AppCompatActivity {
                 });
             }
         }
+    }
 
+    public void keepScreenAwake(){
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+        PowerManager powerManager = (PowerManager) getSystemService(POWER_SERVICE);
+        PowerManager.WakeLock wakeLock = powerManager.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK,
+                "MyApp::MyWakelockTag");
+        wakeLock.acquire();
     }
 }

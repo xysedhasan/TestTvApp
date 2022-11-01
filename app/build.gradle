@@ -4,7 +4,7 @@ plugins {
 }
 
 android {
-    compileSdkVersion 30
+    compileSdkVersion 31
     buildToolsVersion "30.0.3"
 
     //pass:beyond12345
@@ -13,12 +13,11 @@ android {
     defaultConfig {
         applicationId "com.app.beyondlotto"
         minSdkVersion 21
-        targetSdkVersion 30
-        versionCode 8
-        versionName "1.0.5"
+        targetSdkVersion 31
+        versionCode 12
+        versionName "2.0.0"
         multiDexEnabled true
         vectorDrawables.useSupportLibrary = true
-
     }
 
     compileOptions {

@@ -22,6 +22,7 @@ public class ChooseScreenActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_choose_screen);
         init();
+        loadGamesInLocalStorate();
         AppCompatDelegate.setCompatVectorFromResourcesEnabled(true);
        //  setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 
@@ -88,13 +89,8 @@ public class ChooseScreenActivity extends AppCompatActivity {
         screen1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                if ( userme.getScreen1().getOrientation().equals("portrait") ){
-//                    Intent intent = new Intent(ChooseScreenActivity.this, Screen1VerticalActivity.class);
-//                    startActivity(intent);
-//                }else {
-                    Intent intent = new Intent(ChooseScreenActivity.this, Screen1Activity.class);
-                    startActivity(intent);
-//                }
+                Intent intent = new Intent(ChooseScreenActivity.this, Screen1Activity.class);
+                startActivity(intent);
             }
         });
 
@@ -131,6 +127,10 @@ public class ChooseScreenActivity extends AppCompatActivity {
         });
 
 
+    }
+
+    private void loadGamesInLocalStorate(){
+        AppRepository.getGames(this);
     }
 
     public void init(){
