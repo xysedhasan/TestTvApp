@@ -1,29 +1,19 @@
-package com.app.beyondlotto.Model;
+package com.app.beyondlottotv.Model;
 
 import java.util.ArrayList;
 
 public class Screen1 {
-    ArrayList<String>  array_for_boxes = new ArrayList<>();
-    ArrayList<Boolean> animation_for_boxes = new ArrayList<>();
+    ArrayList<Box>  box_settings = new ArrayList<>();
     String empty_box,empty_box_custom_image,orientation;
     boolean show_header;
     int total_boxes;
 
-
-    public ArrayList<Boolean> getAnimation_for_boxes() {
-        return animation_for_boxes;
+    public ArrayList<Box> getBox_settings() {
+        return box_settings;
     }
 
-    public void setAnimation_for_boxes(ArrayList<Boolean> animation_for_boxes) {
-        this.animation_for_boxes = animation_for_boxes;
-    }
-
-    public ArrayList<String> getArray_for_boxes() {
-        return array_for_boxes;
-    }
-
-    public void setArray_for_boxes(ArrayList<String> array_for_boxes) {
-        this.array_for_boxes = array_for_boxes;
+    public void setBox_settings(ArrayList<Box> box_settings) {
+        this.box_settings = box_settings;
     }
 
     public String getEmpty_box() {

@@ -30,22 +30,44 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
-            android:layout_centerHorizontal="true">
+            android:layout_marginStart="2dp"
+            android:layout_marginTop="2dp"
+            android:layout_marginEnd="2dp"
+            android:layout_marginBottom="2dp" >
 
             <TextView
                 android:id="@+id/imagenumber"
-                android:layout_width="28dp"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_marginBottom="1dp"
+                android:background="@drawable/squareimg"
+                android:textColor="@color/black"
+                android:textAlignment="center"
+                android:textSize="17sp"
+                android:textStyle="bold" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentEnd="true"
+            android:layout_marginStart="2dp"
+            android:layout_marginTop="2dp"
+            android:layout_marginEnd="2dp"
+            android:layout_marginBottom="2dp">
+            <TextView
+                android:id="@+id/ticketNumber"
+                android:visibility="gone"
+                android:layout_width="38dp"
                 android:layout_height="28dp"
                 android:layout_centerHorizontal="true"
-                android:layout_marginStart="5dp"
-                android:layout_marginTop="5dp"
-                android:layout_marginEnd="5dp"
-                android:layout_marginBottom="5dp"
-                android:background="@drawable/circle"
+                android:background="@drawable/blackrectangle"
                 android:gravity="center"
-                android:text="50"
-                android:textColor="@color/black"
-                android:textSize="18sp"
+                android:textAlignment="center"
+                android:text="T350"
+                android:textColor="@color/white"
+                android:textSize="15sp"
                 android:textStyle="bold" />
         </RelativeLayout>
     </RelativeLayout>

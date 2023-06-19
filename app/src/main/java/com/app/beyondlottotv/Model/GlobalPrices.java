@@ -1,4 +1,4 @@
-package com.app.beyondlotto.Model;
+package com.app.beyondlottotv.Model;
 
 public class GlobalPrices {
 

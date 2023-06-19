@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    package="com.app.beyondlotto">
+    package="com.app.beyondlottotv">
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.WAKE_LOCK" />
@@ -27,33 +27,33 @@
         android:theme="@style/Theme.Leanback.VerticalGrid">
 
         <activity
-            android:name="com.app.beyondlotto.Activities.Screen5Activity"
+            android:name="com.app.beyondlottotv.Activities.Screen5Activity"
             android:configChanges="orientation|screenSize|screenLayout|keyboardHidden"
             android:theme="@style/Theme.AppCompat" />
         <activity
-            android:name="com.app.beyondlotto.Activities.Screen4Activity"
+            android:name="com.app.beyondlottotv.Activities.Screen4Activity"
             android:configChanges="orientation|screenSize|screenLayout|keyboardHidden"
             android:theme="@style/Theme.AppCompat" />
         <activity
-            android:name="com.app.beyondlotto.Activities.Screen3Activity"
-            android:configChanges="orientation|screenSize|screenLayout|keyboardHidden"
-            android:theme="@style/Theme.AppCompat" />
-
-        <activity
-            android:name="com.app.beyondlotto.Activities.Screen2Activity"
+            android:name="com.app.beyondlottotv.Activities.Screen3Activity"
             android:configChanges="orientation|screenSize|screenLayout|keyboardHidden"
             android:theme="@style/Theme.AppCompat" />
 
         <activity
-            android:name="com.app.beyondlotto.Activities.Screen1Activity"
+            android:name="com.app.beyondlottotv.Activities.Screen2Activity"
             android:configChanges="orientation|screenSize|screenLayout|keyboardHidden"
             android:theme="@style/Theme.AppCompat" />
 
         <activity
-            android:name="com.app.beyondlotto.Activities.ChooseScreenActivity"
+            android:name="com.app.beyondlottotv.Activities.Screen1Activity"
+            android:configChanges="orientation|screenSize|screenLayout|keyboardHidden"
+            android:theme="@style/Theme.AppCompat" />
+
+        <activity
+            android:name="com.app.beyondlottotv.Activities.ChooseScreenActivity"
             android:theme="@style/Theme.AppCompat" />
         <activity
-            android:name="com.app.beyondlotto.Activities.LoginActivity"
+            android:name="com.app.beyondlottotv.Activities.LoginActivity"
             android:banner="@mipmap/beyond"
             android:icon="@mipmap/beyond"
             android:label="@string/app_name"

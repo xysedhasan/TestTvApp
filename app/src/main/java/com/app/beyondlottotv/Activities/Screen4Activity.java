@@ -1,4 +1,4 @@
-package com.app.beyondlotto.Activities;
+package com.app.beyondlottotv.Activities;
 
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
@@ -9,6 +9,7 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.PowerManager;
+import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.ImageView;
@@ -18,8 +19,8 @@ import android.widget.Toast;
 import android.widget.VideoView;
 
 import com.bumptech.glide.Glide;
-import com.app.beyondlotto.Model.AppRepository;
-import com.app.beyondlotto.R;
+import com.app.beyondlottotv.Model.AppRepository;
+import com.app.beyondlottotv.R;
 
 public class Screen4Activity extends AppCompatActivity {
     static ImageView imageView;
@@ -37,18 +38,17 @@ public class Screen4Activity extends AppCompatActivity {
     }
 
     private void getSetUserData() {
+        Log.d("Screen4Activity", "getSetUserData: ");
         AppRepository.getUser(this, getApplicationContext(),"screen4",(status,user)->{
             if (status){
                 AppRepository.getGamesofUser(this, user, getApplicationContext(), "screen4",(type,img)->{
-                    this.runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            if (type != null && img != null){
-                                setMediaData(Screen4Activity.this, type, img, "");
-                            }else {
-                                Toast.makeText(Screen4Activity.this, "No Data found!", Toast.LENGTH_SHORT).show();
-                                pbar.setVisibility(View.GONE);
-                            }
+                    Log.d("Screen4Activity", "AppRepository.getGamesofUser: ");
+                    this.runOnUiThread(() -> {
+                        if (type != null && img != null){
+                            setMediaData(Screen4Activity.this, type, img, "");
+                        }else {
+                            Toast.makeText(Screen4Activity.this, "No Data found!", Toast.LENGTH_SHORT).show();
+                            pbar.setVisibility(View.GONE);
                         }
                     });
                 });

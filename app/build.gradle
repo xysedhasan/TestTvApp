@@ -4,18 +4,18 @@ plugins {
 }
 
 android {
-    compileSdkVersion 31
+    compileSdkVersion 30
     buildToolsVersion "30.0.3"
 
     //pass:beyond12345
     //alias:key0
 
     defaultConfig {
-        applicationId "com.app.beyondlotto"
+        applicationId "com.app.beyondlottotv"
         minSdkVersion 21
-        targetSdkVersion 31
-        versionCode 12
-        versionName "2.0.0"
+        targetSdkVersion 30
+        versionCode 13
+        versionName "2.0.1"
         multiDexEnabled true
         vectorDrawables.useSupportLibrary = true
     }
@@ -58,5 +58,8 @@ dependencies {
     // When using the BoM, you don't specify versions in Firebase library dependencies
     implementation 'com.google.firebase:firebase-crashlytics'
     implementation 'com.google.firebase:firebase-analytics'
+
+    implementation 'org.jsoup:jsoup:1.16.1'
+
 }
 apply plugin: 'com.google.firebase.crashlytics'

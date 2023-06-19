@@ -1,4 +1,4 @@
-package com.app.beyondlotto;
+package com.app.beyondlottotv;
 
 import android.os.Bundle;
 

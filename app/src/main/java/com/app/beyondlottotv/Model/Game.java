@@ -1,4 +1,4 @@
-package com.app.beyondlotto.Model;
+package com.app.beyondlottotv.Model;
 
 import java.util.Date;
 
@@ -6,7 +6,6 @@ public class Game {
     String description,image_url,number,ticket_value;
     boolean is_active;
     Date created_at;
-
 
     public Date getCreated_at() {
         return created_at;

@@ -1,4 +1,4 @@
-package com.app.beyondlotto.Model;
+package com.app.beyondlottotv.Model;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -8,7 +8,7 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.app.beyondlotto.R;
+import com.app.beyondlottotv.R;
 
 import java.util.ArrayList;
 

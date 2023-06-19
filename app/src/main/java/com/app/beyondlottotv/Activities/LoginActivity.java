@@ -1,23 +1,19 @@
-package com.app.beyondlotto.Activities;
+package com.app.beyondlottotv.Activities;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.content.ContextCompat;
 
 import android.content.Intent;
-import android.os.Build;
 import android.os.Bundle;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
-import com.app.beyondlotto.Model.AppRepository;
-import com.app.beyondlotto.Model.Prefrences;
-import com.app.beyondlotto.R;
+import com.app.beyondlottotv.Model.AppRepository;
+import com.app.beyondlottotv.Model.Prefrences;
+import com.app.beyondlottotv.R;
 
 
 
@@ -34,7 +30,6 @@ public class LoginActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-
         init();
         submit.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -42,7 +37,6 @@ public class LoginActivity extends AppCompatActivity {
                 validate();
             }
         });
-
     }
 
     private void validate() {

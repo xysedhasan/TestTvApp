@@ -1,4 +1,4 @@
-package com.app.beyondlotto.Model;
+package com.app.beyondlottotv.Model;
 
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -19,7 +19,6 @@ public class Prefrences {
         SharedPreferences.Editor editor = prefs.edit();
         editor.putString("name", user.getName());
         editor.putString("email", user.getEmail());
-
         editor.putBoolean("isLoggedin", user.isLogin_status());
 
 

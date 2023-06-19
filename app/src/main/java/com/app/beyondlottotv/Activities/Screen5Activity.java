@@ -1,4 +1,4 @@
-package com.app.beyondlotto.Activities;
+package com.app.beyondlottotv.Activities;
 
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
@@ -19,14 +19,14 @@ import android.widget.Toast;
 import android.widget.VideoView;
 
 import com.bumptech.glide.Glide;
-import com.app.beyondlotto.Model.AppRepository;
-import com.app.beyondlotto.R;
+import com.app.beyondlottotv.Model.AppRepository;
+import com.app.beyondlottotv.R;
 
 public class Screen5Activity extends AppCompatActivity {
     ImageView imageView;
     ProgressBar pbar;
     VideoView videoView;
-    private static final String TAG = "Screen5Activity";
+
 
     @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
@@ -47,19 +47,17 @@ public class Screen5Activity extends AppCompatActivity {
     }
 
     private void getSetUserData(){
+        Log.d("Screen5Activity", "getSetUserData: ");
         AppRepository.getUser(this, getApplicationContext(), "screen5", (status, user) -> {
             if (status) {
                 AppRepository.getGamesofUser(this, user, getApplicationContext(), "screen5", (type, img) -> {
-
-                    this.runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            if (type != null && img != null) {
-                                setMediaData(Screen5Activity.this, type, img, "");
-                            } else {
-                                Toast.makeText(Screen5Activity.this, "No Data found!", Toast.LENGTH_SHORT).show();
-                                pbar.setVisibility(View.GONE);
-                            }
+                    Log.d("Screen5Activity", "getSetUserData: ");
+                    this.runOnUiThread(() -> {
+                        if (type != null && img != null) {
+                            setMediaData(Screen5Activity.this, type, img, "");
+                        } else {
+                            Toast.makeText(Screen5Activity.this, "No Data found!", Toast.LENGTH_SHORT).show();
+                            pbar.setVisibility(View.GONE);
                         }
                     });
                 });

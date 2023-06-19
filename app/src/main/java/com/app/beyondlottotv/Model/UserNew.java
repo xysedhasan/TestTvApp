@@ -1,10 +1,12 @@
-package com.app.beyondlotto.Model;
+package com.app.beyondlottotv.Model;
 
 import java.util.Date;
 
 public class UserNew {
 
     String account_type,address,device,email,last_login,name,phone,role,subscription_date;
+    String company_name,contact_person_location,contact_person_phone,location_phone,owner_phone,store_address,store_email,store_name;
+    String subscription_expires;
     Date created_at, updated_at;
     boolean is_blocked, is_paid_user, login_status;
     Screen1 screen1;
@@ -13,20 +15,15 @@ public class UserNew {
     Screen3 screen4;
     Screen3 screen5;
 
+    public UserNew() {
+    }
+
     public String getAccount_type() {
         return account_type;
     }
 
     public void setAccount_type(String account_type) {
         this.account_type = account_type;
-    }
-
-    public String getSubscription_date() {
-        return subscription_date;
-    }
-
-    public void setSubscription_date(String subscription_date) {
-        this.subscription_date = subscription_date;
     }
 
     public String getAddress() {
@@ -85,6 +82,86 @@ public class UserNew {
         this.role = role;
     }
 
+    public String getSubscription_date() {
+        return subscription_date;
+    }
+
+    public void setSubscription_date(String subscription_date) {
+        this.subscription_date = subscription_date;
+    }
+
+    public String getCompany_name() {
+        return company_name;
+    }
+
+    public void setCompany_name(String company_name) {
+        this.company_name = company_name;
+    }
+
+    public String getContact_person_location() {
+        return contact_person_location;
+    }
+
+    public void setContact_person_location(String contact_person_location) {
+        this.contact_person_location = contact_person_location;
+    }
+
+    public String getContact_person_phone() {
+        return contact_person_phone;
+    }
+
+    public void setContact_person_phone(String contact_person_phone) {
+        this.contact_person_phone = contact_person_phone;
+    }
+
+    public String getLocation_phone() {
+        return location_phone;
+    }
+
+    public void setLocation_phone(String location_phone) {
+        this.location_phone = location_phone;
+    }
+
+    public String getOwner_phone() {
+        return owner_phone;
+    }
+
+    public void setOwner_phone(String owner_phone) {
+        this.owner_phone = owner_phone;
+    }
+
+    public String getStore_address() {
+        return store_address;
+    }
+
+    public void setStore_address(String store_address) {
+        this.store_address = store_address;
+    }
+
+    public String getStore_email() {
+        return store_email;
+    }
+
+    public void setStore_email(String store_email) {
+        this.store_email = store_email;
+    }
+
+    public String getStore_name() {
+        return store_name;
+    }
+
+    public void setStore_name(String store_name) {
+        this.store_name = store_name;
+    }
+
+    public String getSubscription_expires() {
+        return subscription_expires;
+    }
+
+    public void setSubscription_expires(String subscription_expires) {
+        this.subscription_expires = subscription_expires;
+    }
+
     public Date getCreated_at() {
         return created_at;
     }
@@ -124,8 +201,6 @@ public class UserNew {
     public void setLogin_status(boolean login_status) {
         this.login_status = login_status;
     }
-
-
 
     public Screen1 getScreen1() {
         return screen1;

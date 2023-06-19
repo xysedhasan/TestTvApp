@@ -1,16 +1,18 @@
-package com.app.beyondlotto.Activities;
-
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.app.AppCompatDelegate;
+package com.app.beyondlottotv.Activities;
 
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 
-import com.app.beyondlotto.Model.AppRepository;
-import com.app.beyondlotto.Model.UserNew;
-import com.app.beyondlotto.R;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatDelegate;
+
+import com.app.beyondlottotv.Model.AppRepository;
+import com.app.beyondlottotv.Model.ScrapeWebsiteTask;
+import com.app.beyondlottotv.Model.UserNew;
+import com.app.beyondlottotv.R;
 
 public class ChooseScreenActivity extends AppCompatActivity {
 
@@ -24,24 +26,24 @@ public class ChooseScreenActivity extends AppCompatActivity {
         init();
         loadGamesInLocalStorate();
         AppCompatDelegate.setCompatVectorFromResourcesEnabled(true);
-       //  setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+//          setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 
         AppRepository.getUser(this,getApplicationContext(),"",(status,user)->{
             if (user!= null){
                 userme = user;
-                if (user.getAccount_type().equals("basic")){
+                if (user.getAccount_type().equals("A1")){
                     screen1.setVisibility(View.VISIBLE);
                     screen2.setVisibility(View.GONE);
                     screen3.setVisibility(View.GONE);
                     screen4.setVisibility(View.GONE);
                     screen5.setVisibility(View.GONE);
-                }else if(user.getAccount_type().equals("standard")){
+                }else if(user.getAccount_type().equals("B2")){
                     screen1.setVisibility(View.VISIBLE);
                     screen2.setVisibility(View.GONE);
                     screen3.setVisibility(View.GONE);
                     screen4.setVisibility(View.GONE);
                     screen5.setVisibility(View.GONE);
-                }else if(user.getAccount_type().equals("ultimate")){
+                }else if(user.getAccount_type().equals("C3")){
                     screen1.setVisibility(View.VISIBLE);
                     screen2.setVisibility(View.VISIBLE);
                     screen3.setVisibility(View.GONE);
@@ -49,7 +51,7 @@ public class ChooseScreenActivity extends AppCompatActivity {
                     screen5.setVisibility(View.GONE);
                     screen1.setNextFocusRightId(R.id.rltvscreen2);
                     screen2.setNextFocusLeftId(R.id.rltvscreen1);
-                }else if(user.getAccount_type().equals("premium")){
+                }else if(user.getAccount_type().equals("D4")){
                     screen1.setVisibility(View.VISIBLE);
                     screen2.setVisibility(View.GONE);
                     screen3.setVisibility(View.VISIBLE);
@@ -63,7 +65,7 @@ public class ChooseScreenActivity extends AppCompatActivity {
                     screen3.setNextFocusRightId(R.id.rltvscreen4);
                     screen4.setNextFocusLeftId(R.id.rltvscreen3);
 
-                }else if(user.getAccount_type().equals("business")){
+                }else if(user.getAccount_type().equals("E5")){
                     screen1.setVisibility(View.VISIBLE);
                     screen2.setVisibility(View.VISIBLE);
                     screen3.setVisibility(View.VISIBLE);
@@ -86,6 +88,7 @@ public class ChooseScreenActivity extends AppCompatActivity {
                 }
             }
         });
+
         screen1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -139,6 +142,8 @@ public class ChooseScreenActivity extends AppCompatActivity {
         screen3 = findViewById(R.id.rltvscreen3);
         screen4 = findViewById(R.id.rltvscreen4);
         screen5 = findViewById(R.id.rltvscreen5);
+
+        new ScrapeWebsiteTask().execute();
     }
 
     @Override
