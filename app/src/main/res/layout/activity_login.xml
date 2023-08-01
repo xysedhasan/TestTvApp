@@ -64,6 +64,31 @@
                     android:textSize="6sp" />
 
             </RelativeLayout>
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/centrerltv"
+                android:layout_centerVertical="true">
+                <ImageView
+                    android:id="@+id/ivqrcodeimg"
+                    android:layout_width="60dp"
+                    android:layout_height="60dp"
+                    android:scaleType="centerCrop"
+                    android:layout_marginTop="12dp"
+                    android:layout_centerHorizontal="true"
+                   />
+                <TextView
+                    android:id="@+id/qrtv1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginTop="6dp"
+                    android:layout_below="@+id/ivqrcodeimg"
+                    android:text="Scan Code to login"
+                    android:layout_centerHorizontal="true"
+                    android:textColor="#FFFFFF"
+                    android:textSize="8sp" />
+            </RelativeLayout>
 
             <RelativeLayout
                 android:id="@+id/bottomrltv"
@@ -128,6 +153,7 @@
                 android:layout_marginLeft="30dp"
                 android:layout_marginRight="30dp"
                 android:orientation="vertical">
+
 
                 <TextView
                     android:layout_width="wrap_content"

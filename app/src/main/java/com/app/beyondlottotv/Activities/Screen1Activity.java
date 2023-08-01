@@ -5,10 +5,12 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Context;
 import android.graphics.Typeface;
+import android.graphics.drawable.AnimationDrawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.PowerManager;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
@@ -23,27 +25,31 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.app.beyondlottotv.Model.AppRepository;
-import com.app.beyondlottotv.Model.Game;
 import com.app.beyondlottotv.Model.GridAdapter;
+import com.app.beyondlottotv.Model.Prefrences;
 import com.app.beyondlottotv.Model.Screen1;
 import com.app.beyondlottotv.R;
-
-import java.util.ArrayList;
 
 public class Screen1Activity extends AppCompatActivity {
 
     static GridView gridView;
     RelativeLayout logolyt, footerRelative;
     static RelativeLayout gridRelative;
+    LinearLayout texasheaderlyt, georgiahaderlyt;
     static int sizeoflyt = 0;
     static ProgressBar pbar;
     static RelativeLayout headerrltv;
+    String screenorientation = "landscape";
     static RelativeLayout parent;
+    TextView cash3, cash4, cashpop, keno, megamilliong, powerballg, fantasy5, cash4life, georgia5, jumbobucks;
+    TextView dycash3, dycash4, dycashpop, dykeno, dymegamilliong, dypowerballg, dyfantasy5, dycash4life, dygeorgia5, dyjumbobucks;
+    LinearLayout cash3linearLayout, cash4linearLayout, cashpoplinearLayout, kenolinearLayout, megamillionglinearLayout, powerballglinearLayout, fantasy5linearLayout, cash4lifelinearLayout, georgia5linearLayout, jumbobuckslinearLayout;
+
     LinearLayout powerlinearLayout, megamilionslinearLayout, lottotexaslinearLayout, texastwosteplinearLayout, pick3linearLayout, daily4linearLayout, cash_fivelinearLayout, allornothinglinearLayout;
     TextView powerprice, lottoPrice, megaballPrice, texastwo, pick3, daily4, cashfive, allornothing;
     TextView dypowerprice, dylottoPrice, dymegaballPrice, dytexastwo, dypick3, dydaily4, dycashfive, dyallornothing;
     String[] powerpricetexts, lottoPricetexts, megaballPricetexts, texastwotexts, pick3texts, daily4texts, cashfivetexts, allornothingtexts;
-
+    private DisplayMetrics displayMetrics;
     @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,17 +59,12 @@ public class Screen1Activity extends AppCompatActivity {
         init();
         keepScreenAwake();
         setUpGridView();
-        getSetUserData();
-
         //item click listner
         gridView.setOnItemClickListener((parent, view, position, id) -> {
         });
-
-
     }
 
     private void setUpGridView() {
-
         int height = getApplicationContext().getResources().getDisplayMetrics().heightPixels;
         gridView.setVerticalScrollBarEnabled(false);
         gridView.setStretchMode(GridView.STRETCH_COLUMN_WIDTH);
@@ -80,7 +81,17 @@ public class Screen1Activity extends AppCompatActivity {
                 });
                 this.runOnUiThread(() -> {
                     showHideHeader(user.getScreen1().isShow_header());
-                    setBoxes(user.getScreen1().getTotal_boxes());
+                    if (user.getScreen1().getOrientation().equals("portrait")) {
+                        changeScrren(user.getScreen1().getTotal_boxes());
+                        stopTextSwap();
+                        currentIndex = 0;
+                        swapText();
+                        setHeightofHeader(83);
+                    } else {
+                        setBoxes(user.getScreen1().getTotal_boxes());
+                        startTextSwap();
+                        setHeightofHeader(75);
+                    }
                 });
             }
         });
@@ -99,7 +110,6 @@ public class Screen1Activity extends AppCompatActivity {
                     cashfive.setText(prices.getCash_five());
                     allornothing.setText(prices.getAll_or_nothing());
                 });
-
             }
         });
     }
@@ -249,18 +259,24 @@ public class Screen1Activity extends AppCompatActivity {
                 });
             }
         });
-
-        startTextSwap();
     }
 
     //khokhar@2921
     public static void initrecycler(Context context, Screen1 screen1, Boolean showheader, String orientation, int boxes, String empty_box, String imageurl) {
 
-        gridView.setVerticalScrollBarEnabled(false);
-        if (showheader) {
-            sizeoflyt = parent.getHeight() - headerrltv.getHeight() - 5;
+//        gridView.setVerticalScrollBarEnabled(false);
+        if (orientation.equals("portrait")) {
+            sizeoflyt = parent.getWidth() - 10 ;
+
         } else {
-            sizeoflyt = parent.getHeight() - 5;
+            if (parent.getHeight() > parent.getWidth()) {
+                sizeoflyt = parent.getWidth()  ;
+            } else {
+                sizeoflyt = parent.getHeight() ;
+            }
+        }
+        if (showheader) {
+            sizeoflyt = sizeoflyt - headerrltv.getHeight();
         }
         GridAdapter adpter = new GridAdapter(context, "1", screen1, sizeoflyt, orientation, boxes, empty_box, imageurl);
         gridView.setAdapter(adpter);
@@ -282,6 +298,18 @@ public class Screen1Activity extends AppCompatActivity {
     }
 
     public void setBoxes(int totalboxes) {
+        RelativeLayout mainLayout = (RelativeLayout) findViewById(R.id.parent);
+        int w = displayMetrics.widthPixels;
+        int h = displayMetrics.heightPixels;
+        mainLayout.setRotation(0.0f);
+        mainLayout.setTranslationX(0);
+        mainLayout.setTranslationY(0);
+        ViewGroup.LayoutParams lp = mainLayout.getLayoutParams();
+        lp.height = h;
+        lp.width = w;
+        mainLayout.requestLayout();
+
+
         if (totalboxes == 100 || totalboxes == 80 || totalboxes == 50) {
             gridView.setNumColumns(10);
         } else if (totalboxes == 65) {
@@ -290,6 +318,22 @@ public class Screen1Activity extends AppCompatActivity {
             gridView.setNumColumns(8);
         } else {
             gridView.setNumColumns(6);
+        }
+    }
+
+    public void setPortraitBoxes(int totalboxes) {
+        if (totalboxes == 100) {
+            gridView.setNumColumns(10);
+        } else if (totalboxes == 80) {
+            gridView.setNumColumns(8);
+        } else if (totalboxes == 65) {
+            gridView.setNumColumns(5);
+        } else if (totalboxes == 50) {
+            gridView.setNumColumns(5);
+        } else if (totalboxes == 32) {
+            gridView.setNumColumns(4);
+        } else if (totalboxes == 18) {
+            gridView.setNumColumns(3);
         }
     }
 
@@ -310,7 +354,7 @@ public class Screen1Activity extends AppCompatActivity {
         cashfive = findViewById(R.id.cash_five);
         allornothing = findViewById(R.id.allornothing);
         parent = findViewById(R.id.parent);
-
+        displayMetrics = getResources().getDisplayMetrics();
         dypowerprice = findViewById(R.id.tvpowerdayndwinnings);
         dylottoPrice = findViewById(R.id.tvlottotexasday);
         dymegaballPrice = findViewById(R.id.tvmegamilionsday);
@@ -331,8 +375,11 @@ public class Screen1Activity extends AppCompatActivity {
 
         currentIndex = 0;
         handler = new Handler();
+
+        getSetUserData();
         getSetGlobalPrices();
         getSetGlobaldaysandwinnings();
+
     }
 
     public void showHideHeader(boolean showheader) {
@@ -481,5 +528,28 @@ public class Screen1Activity extends AppCompatActivity {
         return textView;
     }
 
+    private void changeScrren(int totalBoxes) {
+        RelativeLayout mainLayout = (RelativeLayout) findViewById(R.id.parent);
+        int w = displayMetrics.widthPixels;
+        int h = displayMetrics.heightPixels;
+        mainLayout.setRotation(270.0f);
+        mainLayout.setTranslationX((w - h) / 2);
+        mainLayout.setTranslationY((h - w) / 2);
+        ViewGroup.LayoutParams lp = mainLayout.getLayoutParams();
+        lp.height = w;
+        lp.width = h;
+        mainLayout.requestLayout();
+        setPortraitBoxes(totalBoxes);
+    }
+
+    private void  setHeightofHeader(int dp){
+        RelativeLayout mainLayout = findViewById(R.id.header);
+        int newHeightInDp = dp;
+        float scale = getResources().getDisplayMetrics().density;
+        int newHeightInPixels = (int) (newHeightInDp * scale + 0.5f);
+        ViewGroup.LayoutParams layoutParams = mainLayout.getLayoutParams();
+        layoutParams.height = newHeightInPixels;
+        mainLayout.setLayoutParams(layoutParams);
+    }
 
 }

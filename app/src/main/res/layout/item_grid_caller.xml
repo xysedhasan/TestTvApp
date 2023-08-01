@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/lyt_parent"
+    android:layout_height="match_parent">
+
+    <RelativeLayout
+        android:id="@+id/tabMain"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <com.skydoves.androidribbon.RibbonLayout
+            android:id="@+id/ribbonLayout01"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:textAlignment="center">
+
+            <ImageView
+                android:id="@+id/image"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:cropToPadding="true"
+                android:drawable="@+id/image"
+                android:duration="50"
+                android:padding="2px"
+                android:scaleType="fitXY"
+                android:src="@drawable/comingsoon" />
+        </com.skydoves.androidribbon.RibbonLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="30px" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/brief"
+                android:layout_width="60px"
+                android:layout_height="60px"
+                android:layout_gravity="center"
+                android:layout_marginBottom="12px"
+                android:gravity="center"
+                android:text="0"
+                android:textAppearance="@style/Base.TextAppearance.AppCompat.Caption"
+                android:textColor="@android:color/black"
+                android:textSize="30px"
+                android:textStyle="italic|bold" />
+        </LinearLayout>
+
+        <ImageView
+            android:id="@+id/imgNew"
+            android:layout_width="71px"
+            android:layout_height="51px"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"  />
+    </RelativeLayout>
+
+</LinearLayout>

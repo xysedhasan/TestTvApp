@@ -6,6 +6,6 @@
         android:drawable="@drawable/btn1" /> <!-- focused -->
     <item android:state_hovered="true"
         android:drawable="@drawable/btn1" /> <!-- hovered -->
-    <item android:drawable="@drawable/btnonenormal" /> <!-- default -->
+    <item android:drawable="@drawable/btn1normal" /> <!-- default -->
 </selector>
 

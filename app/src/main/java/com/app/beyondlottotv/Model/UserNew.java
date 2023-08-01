@@ -4,18 +4,36 @@ import java.util.Date;
 
 public class UserNew {
 
-    String account_type,address,device,email,last_login,name,phone,role,subscription_date;
+    String account_type,address,device,email,last_login,name,phone,role,subscription_date,region,id;
     String company_name,contact_person_location,contact_person_phone,location_phone,owner_phone,store_address,store_email,store_name;
     String subscription_expires;
     Date created_at, updated_at;
     boolean is_blocked, is_paid_user, login_status;
     Screen1 screen1;
     Screen1 screen2;
-    Screen3 screen3;
-    Screen3 screen4;
+    Screen1 screen3;
+    Screen1 screen4;
     Screen3 screen5;
+    Screen3 screen6;
+    Screen3 screen7;
 
     public UserNew() {
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public String getRegion() {
+        return region;
+    }
+
+    public void setRegion(String region) {
+        this.region = region;
     }
 
     public String getAccount_type() {
@@ -218,19 +236,19 @@ public class UserNew {
         this.screen2 = screen2;
     }
 
-    public Screen3 getScreen3() {
+    public Screen1 getScreen3() {
         return screen3;
     }
 
-    public void setScreen3(Screen3 screen3) {
+    public void setScreen3(Screen1 screen3) {
         this.screen3 = screen3;
     }
 
-    public Screen3 getScreen4() {
+    public Screen1 getScreen4() {
         return screen4;
     }
 
-    public void setScreen4(Screen3 screen4) {
+    public void setScreen4(Screen1 screen4) {
         this.screen4 = screen4;
     }
 
@@ -240,5 +258,21 @@ public class UserNew {
 
     public void setScreen5(Screen3 screen5) {
         this.screen5 = screen5;
+    }
+
+    public Screen3 getScreen6() {
+        return screen6;
+    }
+
+    public void setScreen6(Screen3 screen6) {
+        this.screen6 = screen6;
+    }
+
+    public Screen3 getScreen7() {
+        return screen7;
+    }
+
+    public void setScreen7(Screen3 screen7) {
+        this.screen7 = screen7;
     }
 }

@@ -1,10 +1,18 @@
 package com.app.beyondlottotv.Model;
 
 public class Box {
-    String game_image,game_no,ticket_no,ticket_value;
+    String game_image,game_no,ticket_no,ticket_value,pack_size;
     Boolean animation;
 
     public Box() {
+    }
+
+    public String getPack_size() {
+        return pack_size;
+    }
+
+    public void setPack_size(String pack_size) {
+        this.pack_size = pack_size;
     }
 
     public String getGame_image() {

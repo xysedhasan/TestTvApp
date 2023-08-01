@@ -19,6 +19,8 @@ public class Prefrences {
         SharedPreferences.Editor editor = prefs.edit();
         editor.putString("name", user.getName());
         editor.putString("email", user.getEmail());
+        editor.putString("region", user.getRegion());
+        editor.putString("id", user.getId());
         editor.putBoolean("isLoggedin", user.isLogin_status());
 
 
@@ -66,6 +68,37 @@ public class Prefrences {
         editor.putString(key, json);
         editor.apply();
     }
+    public static void clearGamesListInLocal(Context context, String key) {
+        SharedPreferences prefs = context.getSharedPreferences("localgameslist", MODE_PRIVATE);
+        SharedPreferences.Editor editor = prefs.edit();
+        editor.remove(key);
+        editor.apply();
+    }
+
+
+    public static int getTotalBoxesScreen2(Context context) {
+        SharedPreferences prefs = context.getSharedPreferences("userDetail", MODE_PRIVATE);
+        return prefs.getInt("total_boxesscreen2", 0);
+    }
+
+    public static void setTotalBoxesScreen2(Context context, int verified) {
+        SharedPreferences prefs = context.getSharedPreferences("userDetail", context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = prefs.edit();
+        editor.putInt("total_boxesscreen2", verified);
+        editor.apply();
+    }
+
+    public static int getTotalBoxesScreen3(Context context) {
+        SharedPreferences prefs = context.getSharedPreferences("userDetail", MODE_PRIVATE);
+        return prefs.getInt("total_boxesscreen3", 0);
+    }
+
+    public static void setTotalBoxesScreen3(Context context, int verified) {
+        SharedPreferences prefs = context.getSharedPreferences("userDetail", context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = prefs.edit();
+        editor.putInt("total_boxesscreen3", verified);
+        editor.apply();
+    }
 
 
     public static int getTotalBoxesScreen1(Context context) {
@@ -80,7 +113,10 @@ public class Prefrences {
         editor.apply();
     }
 
-
+    public static String getRegion(Context context) {
+        SharedPreferences prefs = context.getSharedPreferences("userDetail", MODE_PRIVATE);
+        return prefs.getString("region","Texas");
+    }
 
     public static ArrayList<Game> getGamesListFromLocal(Context context, String key) {
         SharedPreferences prefs = context.getSharedPreferences("localgameslist", MODE_PRIVATE);

@@ -3,9 +3,17 @@ package com.app.beyondlottotv.Model;
 import java.util.Date;
 
 public class Game {
-    String description,image_url,number,ticket_value;
+    String description,image_url,number,ticket_value,pack_size;
     boolean is_active;
     Date created_at;
+
+    public String getPack_size() {
+        return pack_size;
+    }
+
+    public void setPack_size(String pack_size) {
+        this.pack_size = pack_size;
+    }
 
     public Date getCreated_at() {
         return created_at;

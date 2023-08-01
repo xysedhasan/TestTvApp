@@ -2,35 +2,403 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
+    android:background="#ffffff"
+    android:nestedScrollingEnabled="false"
+    android:keepScreenOn="true"
+    android:id="@+id/parent"
     tools:context=".Activities.Screen4Activity">
     <ProgressBar
         android:id="@+id/pbar"
+        android:visibility="gone"
         android:layout_width="50dp"
         android:layout_height="50dp"
+        android:layout_marginTop="13dp"
         android:layout_centerHorizontal="true"
-        android:layout_centerVertical="true"
         />
 
-    <ImageView
-        android:id="@+id/imagev"
-        android:visibility="gone"
+    <RelativeLayout
+
+        android:id="@+id/header"
+        android:layout_width="wrap_content"
+        android:layout_height="75dp"
+        android:orientation="vertical"
+        android:paddingLeft="5dp"
+        android:paddingTop="5dp"
+        android:paddingRight="5dp"
+        android:visibility="invisible">
+
+
+        <RelativeLayout
+            android:id="@+id/logos"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_centerHorizontal="true">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:orientation="horizontal"
+                android:weightSum="8">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="33dp"
+                        android:src="@drawable/powerball" />
+
+                    <TextView
+                        android:id="@+id/powerbalprice"
+                        android:layout_width="match_parent"
+                        android:layout_height="18dp"
+                        android:layout_gravity="center"
+                        android:gravity="center"
+                        android:textColor="#000000"
+                        android:textSize="14sp"
+                        android:textStyle="bold" />
+
+                    <LinearLayout
+                        android:id="@+id/powerlinearlyt"
+                        android:layout_width="wrap_content"
+                        android:layout_height="18dp"
+                        android:orientation="horizontal"
+                        android:layout_gravity="center"
+                        >
+                    </LinearLayout>
+
+                    <TextView
+                        android:id="@+id/tvpowerdayndwinnings"
+                        android:layout_width="wrap_content"
+                        android:layout_height="18dp"
+                        android:layout_gravity="center"
+                        android:gravity="center"
+                        android:text="MON | WED | SAT"
+                        android:textColor="#000000"
+                        android:textSize="10sp" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="33dp"
+                        android:src="@drawable/megaball" />
+
+                    <TextView
+                        android:id="@+id/megamilions"
+                        android:layout_width="match_parent"
+                        android:layout_height="18dp"
+                        android:layout_gravity="center"
+                        android:gravity="center"
+                        android:textColor="#000000"
+                        android:textSize="14sp"
+                        android:textStyle="bold" />
+                    <LinearLayout
+                        android:id="@+id/megamilionslinearlyt"
+                        android:layout_width="wrap_content"
+                        android:layout_height="18dp"
+                        android:orientation="horizontal"
+                        android:layout_gravity="center"
+                        >
+                    </LinearLayout>
+                    <TextView
+                        android:id="@+id/tvmegamilionsday"
+                        android:layout_width="match_parent"
+                        android:layout_height="18dp"
+                        android:layout_gravity="center"
+                        android:gravity="center"
+                        android:text="TUE | FRI"
+                        android:textColor="#000000"
+                        android:textSize="10sp" />
+                </LinearLayout>
+
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="33dp"
+                        android:src="@drawable/texaslotto" />
+
+                    <TextView
+                        android:id="@+id/lottotexas"
+                        android:layout_width="match_parent"
+                        android:layout_height="18dp"
+                        android:layout_gravity="center"
+                        android:gravity="center"
+                        android:textColor="#000000"
+                        android:textSize="14sp"
+                        android:textStyle="bold" />
+                    <LinearLayout
+                        android:id="@+id/lottotexaslinearlyt"
+                        android:layout_width="wrap_content"
+                        android:layout_height="18dp"
+                        android:orientation="horizontal"
+                        android:layout_gravity="center"
+                        >
+                    </LinearLayout>
+                    <TextView
+                        android:id="@+id/tvlottotexasday"
+                        android:layout_width="match_parent"
+                        android:layout_height="18dp"
+                        android:layout_gravity="center"
+                        android:gravity="center"
+                        android:text="MON | WED | SAT"
+                        android:textColor="#000000"
+                        android:textSize="10sp" />
+                </LinearLayout>
+
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="33dp"
+                        android:src="@drawable/texastwosteps" />
+
+                    <TextView
+                        android:id="@+id/texastwostep"
+                        android:layout_width="match_parent"
+                        android:layout_height="18dp"
+                        android:layout_gravity="center"
+                        android:gravity="center"
+                        android:textColor="#000000"
+                        android:textSize="14sp"
+                        android:textStyle="bold" />
+                    <LinearLayout
+                        android:id="@+id/texastwosteplinearlyt"
+                        android:layout_width="wrap_content"
+                        android:layout_height="18dp"
+                        android:orientation="horizontal"
+                        android:layout_gravity="center"
+                        >
+                    </LinearLayout>
+                    <TextView
+                        android:id="@+id/tvtexastwostepday"
+                        android:layout_width="match_parent"
+                        android:layout_height="18dp"
+                        android:layout_gravity="center"
+                        android:gravity="center"
+                        android:text="MON | THU"
+                        android:textColor="#000000"
+                        android:textSize="10sp" />
+                </LinearLayout>
+
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="33dp"
+                        android:src="@drawable/picktheree" />
+
+                    <TextView
+                        android:id="@+id/pick3"
+                        android:layout_width="match_parent"
+                        android:layout_height="18dp"
+                        android:layout_gravity="center"
+                        android:gravity="center"
+                        android:textColor="#000000"
+                        android:textSize="14sp"
+                        android:textStyle="bold" />
+                    <LinearLayout
+                        android:id="@+id/pick3linearlyt"
+                        android:layout_width="wrap_content"
+                        android:layout_height="18dp"
+                        android:orientation="horizontal"
+                        android:layout_gravity="center"
+                        >
+                    </LinearLayout>
+                    <TextView
+                        android:id="@+id/tvpick3day"
+                        android:layout_width="wrap_content"
+                        android:layout_height="18dp"
+                        android:layout_gravity="center"
+                        android:gravity="center"
+                        android:text="MON | SAT"
+                        android:textColor="#000000"
+                        android:textSize="10sp" />
+                </LinearLayout>
+
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="33dp"
+                        android:src="@drawable/dailyfour" />
+
+                    <TextView
+                        android:id="@+id/daily4"
+                        android:layout_width="match_parent"
+                        android:layout_height="18dp"
+                        android:layout_gravity="center"
+                        android:gravity="center"
+                        android:minLines="2"
+                        android:textColor="#000000"
+                        android:textSize="14sp"
+                        android:textStyle="bold" />
+                    <LinearLayout
+                        android:id="@+id/daily4linearlyt"
+                        android:layout_width="wrap_content"
+                        android:layout_height="18dp"
+                        android:orientation="horizontal"
+                        android:layout_gravity="center"
+                        >
+                    </LinearLayout>
+                    <TextView
+                        android:id="@+id/daily4day"
+                        android:layout_width="wrap_content"
+                        android:layout_height="18dp"
+                        android:layout_gravity="center"
+                        android:gravity="center"
+                        android:text="MON | SAT"
+                        android:textColor="#000000"
+                        android:textSize="10sp" />
+                </LinearLayout>
+
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="33dp"
+                        android:src="@drawable/cashfive" />
+
+                    <TextView
+                        android:id="@+id/cash_five"
+                        android:layout_width="match_parent"
+                        android:layout_height="18dp"
+                        android:layout_gravity="center"
+                        android:gravity="center"
+                        android:textColor="#000000"
+                        android:textSize="14sp"
+                        android:textStyle="bold" />
+                    <LinearLayout
+                        android:id="@+id/tvcash_fivelinearlyt"
+                        android:layout_width="wrap_content"
+                        android:layout_height="18dp"
+                        android:orientation="horizontal"
+                        android:layout_gravity="center"
+                        >
+                    </LinearLayout>
+                    <TextView
+                        android:id="@+id/tvcash_fiveday"
+                        android:layout_width="wrap_content"
+                        android:layout_height="18dp"
+                        android:layout_gravity="center"
+                        android:gravity="center"
+                        android:text="MON | SAT"
+                        android:textColor="#000000"
+                        android:textSize="10sp" />
+                </LinearLayout>
+
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="33dp"
+                        android:src="@drawable/allornothing" />
+
+                    <TextView
+                        android:id="@+id/allornothing"
+                        android:layout_width="match_parent"
+                        android:layout_height="18dp"
+                        android:layout_gravity="center"
+                        android:gravity="center"
+                        android:textColor="#000000"
+                        android:textSize="14sp"
+                        android:textStyle="bold" />
+
+                    <LinearLayout
+                        android:id="@+id/allornothinglinearlyt"
+                        android:layout_width="match_parent"
+                        android:layout_height="18dp"
+                        android:orientation="horizontal"
+                        android:layout_gravity="center"
+                        >
+                    </LinearLayout>
+                    <TextView
+                        android:id="@+id/tvallornothingday"
+                        android:layout_width="wrap_content"
+                        android:layout_height="18dp"
+                        android:layout_gravity="center"
+                        android:gravity="center"
+                        android:text="MON | SAT"
+                        android:textColor="#000000"
+                        android:textSize="10sp" />
+                </LinearLayout>
+
+            </LinearLayout>
+
+        </RelativeLayout>
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/gridrltv"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:scaleType="fitXY"
-        />
+        android:background="@color/black"
+        android:layout_below="@+id/header"
+        >
 
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="5px"
+            android:layout_marginLeft="5px"
+            android:layout_marginBottom="5px"
+            android:background="@color/black"
+            >
+            <GridView
+                android:id="@+id/gridview"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:layout_gravity="fill"
+                android:listSelector="@null"
+                android:fitsSystemWindows="true"
 
-    <VideoView
-        android:visibility="gone"
-        android:id="@+id/myvideoview"
-        android:layout_width="fill_parent"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentBottom="true"
-        android:layout_height="fill_parent">
+                android:nestedScrollingEnabled="false"
+                />
+        </RelativeLayout>
 
-    </VideoView>
+    </RelativeLayout>
+
 </RelativeLayout>

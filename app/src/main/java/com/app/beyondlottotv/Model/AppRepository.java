@@ -3,7 +3,6 @@ package com.app.beyondlottotv.Model;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.content.pm.ActivityInfo;
 import android.os.Build;
 import android.util.Log;
 import android.widget.Toast;
@@ -14,22 +13,32 @@ import androidx.annotation.RequiresApi;
 import androidx.core.content.ContextCompat;
 
 import com.app.beyondlottotv.Activities.LoginActivity;
-import com.app.beyondlottotv.Activities.Screen1Activity;
-import com.app.beyondlottotv.Activities.Screen2Activity;
+import com.app.beyondlottotv.Activities.MainactivityPortraitActivity;
+import com.app.beyondlottotv.Api.ApiResponseCustomtoken;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.google.gson.Gson;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.function.BiConsumer;
+
+import okhttp3.Call;
+import okhttp3.MediaType;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.RequestBody;
+import okhttp3.Response;
 
 
 public class AppRepository {
@@ -65,13 +74,12 @@ public class AppRepository {
     }
 
     public static void getGames(Context context) {
-        Log.d("CriticalBug", "getGames111");
-        db.collection("games").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+        //get games according to the region type
+        db.collection("games").whereEqualTo("region", Prefrences.getRegion(context)).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @RequiresApi(api = Build.VERSION_CODES.N)
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
                 if (task.isSuccessful()) {
-                    Log.d("CriticalBug", "getGames-onComplete");
                     ArrayList<Game> gamesarr = new ArrayList<>();
                     for (QueryDocumentSnapshot document : task.getResult()) {
                         Game game = document.toObject(Game.class);
@@ -105,6 +113,8 @@ public class AppRepository {
                             if (user != null) {
                                 Prefrences.saveUserDetails(context, user, screenNo);
                                 Prefrences.setTotalBoxesScreen1(context, user.getScreen1().getTotal_boxes());
+                                Prefrences.setTotalBoxesScreen2(context, user.getScreen2().getTotal_boxes());
+                                Prefrences.setTotalBoxesScreen3(context, user.getScreen3().getTotal_boxes());
                                 callback.accept(true, user);
                                 try {
                                     checklogout(activity, user.isLogin_status(), context);
@@ -121,291 +131,45 @@ public class AppRepository {
     @RequiresApi(api = Build.VERSION_CODES.N)
     public static void getGamesofUser(Activity activity, UserNew user, Context context, String screenNo, BiConsumer<String, String> callback) {
         if (screenNo.equals("screen1")) {
-            Screen1Activity.initrecycler(context, user.getScreen1(), user.getScreen1().isShow_header(), user.getScreen1().getOrientation(), user.getScreen1().getTotal_boxes(), user.getScreen1().getEmpty_box(), user.getScreen1().getEmpty_box_custom_image());
-
-
-//            int totalbox = user.getScreen1().getTotal_boxes();
-//            ArrayList<String> temp = new ArrayList<>();
-//
-//            ArrayList<Boolean> tempAnimation = new ArrayList<>();
-//            temp.clear();
-//            gamesimages.clear();
-//            if (user.getScreen1().getArray_for_boxes().size() < totalbox) {
-//
-//
-//                for (int i = 0; i < totalbox; i++) {
-//                    temp.add("null");
-//                    tempAnimation.add(false);
-//                    animatearr.add(false);
-//                    gamesimages.add(null);
-//                }
-//
-//                for (int i = 0; i < user.getScreen1().getArray_for_boxes().size(); i++) {
-//                    temp.set(i, user.getScreen1().getArray_for_boxes().get(i));
-//                }
-//
-//                for (int i = 0; i < totalbox; i++) {
-//                    if (temp.get(i) != null && !temp.get(i).contains("null")) {
-//                        String gameNumber = temp.get(i);
-//                        for (Game game : Prefrences.getGamesListFromLocal(context, "games")) {
-//                            if (game.getNumber().equals(gameNumber)) {
-//                                gamesimages.add(i, game);
-//                                break;
-//                            } else {
-//                                gamesimages.add(i, null);
-//                            }
-//                        }
-//                    } else {
-//                        gamesimages.add(i, null);
-//                    }
-//                }
-//
-//                //assigning data temp animation array
-//                for (int i = 0; i < totalbox; i++) {
-//                    if (user.getScreen1().getAnimation_for_boxes().size() > i) {
-//                        if (user.getScreen1().getAnimation_for_boxes().get(i) != null) {
-//                            tempAnimation.set(i, user.getScreen1().getAnimation_for_boxes().get(i));
-//                        } else {
-//                            tempAnimation.set(i, false);
-//                        }
-//                    } else {
-//                        tempAnimation.set(i, false);
-//                    }
-//                }
-//
-//                //assigning data to orignal array from temp array
-//                for (int i = 0; i < totalbox; i++) {
-//                    if (user.getScreen1() != null) {
-//                        if (user.getScreen1().getAnimation_for_boxes() != null) {
-//                            try {
-//                                animatearr.add(i, user.getScreen1().getAnimation_for_boxes().get(i));
-//                            } catch (Exception e) {
-//                                animatearr.add(i, false);
-//                            }
-//                        } else {
-//                            animatearr.add(i, false);
-//                        }
-//                        if (user.getScreen1().getArray_for_tickenumber() != null){
-//                            ticketNumberarr.add(i, user.getScreen1().getArray_for_tickenumber().get(i));
-//                        }else {
-//                            ticketNumberarr.add(i, "0");
-//                        }
-//                    } else {
-//                        animatearr.add(i, false);
-//                    }
-//                }
-//
-//            } else {
-//                for (int i = 0; i < totalbox; i++) {
-//                    temp.add("null");
-//                    tempAnimation.add(false);
-//                    animatearr.add(false);
-//                    gamesimages.add(null);
-//                }
-//                for (int i = 0; i < totalbox; i++) {
-//                    String gameNumber = "";
-//                    if (user.getScreen1().getArray_for_boxes().get(i) != null && !user.getScreen1().getArray_for_boxes().get(i).contains("null")) {
-//                        gameNumber = user.getScreen1().getArray_for_boxes().get(i);
-//                        if (Prefrences.getGamesListFromLocal(context, "games") != null) {
-//                            for (Game game : Prefrences.getGamesListFromLocal(context, "games")) {
-//                                if (game.getNumber().equals(gameNumber)) {
-//                                    gamesimages.add(i, game);
-//                                    break;
-//                                } else {
-//                                    gamesimages.add(i, null);
-//                                }
-//                            }
-//                        }
-//                    }
-////                     else {
-////                         Game emptyGame1 = new Game();
-////                        gamesimages.add(i, emptyGame1);
-////                    }
-//                }
-//
-//                // user.getScreen1().getTotal_boxes();
-//                //assigning data to orignal array from temp array
-//                for (int i = 0; i < totalbox; i++) {
-//                    if (user.getScreen1() != null) {
-//                        if (user.getScreen1().getAnimation_for_boxes() != null) {
-//                            try {
-//                                if (user.getScreen1().getAnimation_for_boxes().size() > i) {
-//                                    animatearr.add(i, user.getScreen1().getAnimation_for_boxes().get(i));
-//                                }else {
-//                                    animatearr.add(i, false);
-//                                }
-//                            } catch (Exception e) {
-//                                animatearr.add(i, false);
-//                            }
-//                        } else {
-//                            animatearr.add(i, false);
-//                        }
-//
-//                        if (user.getScreen1().getArray_for_tickenumber() != null){
-//                            ticketNumberarr.add(i, user.getScreen1().getArray_for_tickenumber().get(i));
-//                        }else {
-//                            ticketNumberarr.add(i, "0");
-//                        }
-//                    } else {
-//                        animatearr.add(i, false);
-//                    }
-//                }
-//            }
-//
-//            //geting total boxes games
-//            ArrayList<Game> gamestemp = new ArrayList<>();
-//            for (int i = 0; i < totalbox; i++) {
-//                if (gamesimages.size() > i) {
-//                    gamestemp.add(gamesimages.get(i));
-//                }
-//            }
-//            Screen1Activity.initrecycler(context, gamestemp,ticketNumberarr, animatearr, user.getScreen1().isShow_header(), user.getScreen1().getOrientation(), user.getScreen1().getTotal_boxes(), user.getScreen1().getEmpty_box(), user.getScreen1().getEmpty_box_custom_image());
-
-
+            MainactivityPortraitActivity.initrecycler(context, user.getScreen1(), user.getScreen1().isShow_header(), user.getScreen1().getOrientation(), user.getScreen1().getTotal_boxes(), user.getScreen1().getEmpty_box(), user.getScreen1().getEmpty_box_custom_image());
+//            Screen1Activity.initrecycler(context, user.getScreen1(), user.getScreen1().isShow_header(), user.getScreen1().getOrientation(), user.getScreen1().getTotal_boxes(), user.getScreen1().getEmpty_box(), user.getScreen1().getEmpty_box_custom_image());
         } else if (screenNo.equals("screen2")) {
-//        activity.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
-//        int totalbox = user.getScreen2().getTotal_boxes();
-//        ArrayList<String> temp = new ArrayList<>();
-//        ArrayList<Boolean> tempAnimation = new ArrayList<>();
-//        if (user.getScreen2().getArray_for_boxes().size() < totalbox) {
-//            for (int i = 0; i < totalbox; i++) {
-//                temp.add("null");
-//                tempAnimation.add(false);
-//                animatearr.add(false);
-//                gamesimages.add(null);
-//            }
-//
-//            for (int i = 0; i < user.getScreen2().getArray_for_boxes().size(); i++) {
-//                temp.set(i, user.getScreen2().getArray_for_boxes().get(i));
-//            }
-//
-//            for (int i = 0; i < totalbox; i++) {
-//                String gameNumber = "";
-//                if (temp.get(i) != null && !temp.get(i).contains("null")) {
-//                    gameNumber = temp.get(i);
-//                    for (Game game : Prefrences.getGamesListFromLocal(context, "games")) {
-//                        if (game.getNumber().equals(gameNumber)) {
-//                            gamesimages.add(i, game);
-//                            break;
-//                        } else {
-//                            gamesimages.add(i, null);
-//                        }
-//                    }
-//                } else {
-//                    gamesimages.add(i, null);
-//                }
-//            }
-////
-//            //assigning data temp animation array
-//            for (int i = 0; i < user.getScreen2().getAnimation_for_boxes().size(); i++) {
-//
-//                tempAnimation.set(i, user.getScreen2().getAnimation_for_boxes().get(i));
-//            }
-//
-//            //assigning data to orignal array from temp array
-//            for (int i = 0; i < totalbox; i++) {
-//
-//                if (user.getScreen2().getAnimation_for_boxes() != null) {
-//                    if (user.getScreen2().getAnimation_for_boxes().size() > i) {
-//                        animatearr.add(i, tempAnimation.get(i));
-//                    } else {
-//                        animatearr.add(i, false);
-//                    }
-//
-//                } else {
-//                    animatearr.add(i, false);
-//                }
-//
-//                if (user.getScreen2().getArray_for_tickenumber() != null) {
-//                    ticketNumberarr.add(i, user.getScreen2().getArray_for_tickenumber().get(i));
-//                } else {
-//                    ticketNumberarr.add(i, "0");
-//                }
-//            }
-//
-//        } else {
-//            for (int i = 0; i < totalbox; i++) {
-//                temp.add("null");
-//                tempAnimation.add(false);
-//                animatearr.add(false);
-//                gamesimages.add(null);
-//            }
-//            for (int i = 0; i < totalbox; i++) {
-//                String gameNumber = "";
-//                if (user.getScreen2().getArray_for_boxes().get(i) != null && !user.getScreen2().getArray_for_boxes().get(i).contains("null")) {
-//                    gameNumber = user.getScreen2().getArray_for_boxes().get(i);
-//                    for (Game game : Prefrences.getGamesListFromLocal(context, "games")) {
-//                        if (game.getNumber().equals(gameNumber)) {
-//                            gamesimages.add(i, game);
-//                            break;
-//                        } else {
-//                            gamesimages.add(i, null);
-//                        }
-//                    }
-//                } else {
-//                    gamesimages.add(i, null);
-//                }
-//            }
-//
-//            //assigning data to orignal array from temp array
-//            for (int i = 0; i < totalbox; i++) {
-//                if (user.getScreen2().getAnimation_for_boxes() != null) {
-//                    if (user.getScreen2().getAnimation_for_boxes().size() > i) {
-//                        animatearr.add(i, user.getScreen2().getAnimation_for_boxes().get(i));
-//                    } else {
-//                        animatearr.add(i, false);
-//                    }
-//
-//                } else {
-//                    animatearr.add(i, false);
-//                }
-//
-//                if (user.getScreen2().getArray_for_tickenumber() != null) {
-//                    ticketNumberarr.add(i, user.getScreen2().getArray_for_tickenumber().get(i));
-//                } else {
-//                    ticketNumberarr.add(i, "0");
-//                }
-//            }
-//
-//
-//        }
-//        //geting total boxes games
-//        ArrayList<Game> gamestemp = new ArrayList<>();
-//        for (int i = 0; i < totalbox; i++) {
-//            gamestemp.add(gamesimages.get(i));
-//        }
-//        Screen2Activity.initrecycler(context, gamestemp, ticketNumberarr, animatearr, user.getScreen2().isShow_header(), user.getScreen2().getOrientation(), user.getScreen2().getTotal_boxes(), user.getScreen2().getEmpty_box(), user.getScreen2().getEmpty_box_custom_image());
+            MainactivityPortraitActivity.initrecycler(context, user.getScreen2(), user.getScreen2().isShow_header(), user.getScreen2().getOrientation(), user.getScreen2().getTotal_boxes(), user.getScreen2().getEmpty_box(), user.getScreen2().getEmpty_box_custom_image());
+//            Screen2Activity.initrecycler(context, user.getScreen2(), user.getScreen2().isShow_header(), user.getScreen2().getOrientation(), user.getScreen2().getTotal_boxes(), user.getScreen2().getEmpty_box(), user.getScreen2().getEmpty_box_custom_image());
 
         } else if (screenNo.equals("screen3")) {
-//            if (user.getScreen3().getOrientation().equals("landscape")) {
-//                activity.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
-//            } else {
-//                activity.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
-//            }
-            if (user.getScreen3() != null) {
-                if (user.getScreen3().getMedia_url() != null) {
-                    callback.accept(user.getScreen3().getMedia_type(), user.getScreen3().getMedia_url());
-                } else {
-                    callback.accept(null, null);
-                }
-            } else {
-                callback.accept(null, null);
-            }
-        } else if (screenNo.equals("screen4")) {
+            MainactivityPortraitActivity.initrecycler(context, user.getScreen3(), user.getScreen3().isShow_header(), user.getScreen3().getOrientation(), user.getScreen3().getTotal_boxes(), user.getScreen3().getEmpty_box(), user.getScreen3().getEmpty_box_custom_image());
+//            Screen3Activity.initrecycler(context, user.getScreen3(), user.getScreen3().isShow_header(), user.getScreen3().getOrientation(), user.getScreen3().getTotal_boxes(), user.getScreen3().getEmpty_box(), user.getScreen3().getEmpty_box_custom_image());
 
-            if (user.getScreen4() != null) {
-                if (user.getScreen4().getMedia_url() != null) {
-                    callback.accept(user.getScreen4().getMedia_type(), user.getScreen4().getMedia_url());
-                } else {
-                    callback.accept(null, null);
-                }
-            } else {
-                callback.accept(null, null);
-            }
+        } else if (screenNo.equals("screen4")) {
+            MainactivityPortraitActivity.initrecycler(context, user.getScreen4(), user.getScreen4().isShow_header(), user.getScreen4().getOrientation(), user.getScreen4().getTotal_boxes(), user.getScreen4().getEmpty_box(), user.getScreen4().getEmpty_box_custom_image());
+//            Screen4Activity.initrecycler(context, user.getScreen4(), user.getScreen4().isShow_header(), user.getScreen4().getOrientation(), user.getScreen4().getTotal_boxes(), user.getScreen4().getEmpty_box(), user.getScreen4().getEmpty_box_custom_image());
         } else if (screenNo.equals("screen5")) {
+
             if (user.getScreen5() != null) {
                 if (user.getScreen5().getMedia_url() != null) {
                     callback.accept(user.getScreen5().getMedia_type(), user.getScreen5().getMedia_url());
+                } else {
+                    callback.accept(null, null);
+                }
+            } else {
+                callback.accept(null, null);
+            }
+        } else if (screenNo.equals("screen6")) {
+
+            if (user.getScreen4() != null) {
+                if (user.getScreen6().getMedia_url() != null) {
+                    callback.accept(user.getScreen6().getMedia_type(), user.getScreen6().getMedia_url());
+                } else {
+                    callback.accept(null, null);
+                }
+            } else {
+                callback.accept(null, null);
+            }
+        } else if (screenNo.equals("screen7")) {
+            if (user.getScreen7() != null) {
+                if (user.getScreen5().getMedia_url() != null) {
+                    callback.accept(user.getScreen7().getMedia_type(), user.getScreen7().getMedia_url());
                 } else {
                     callback.accept(null, null);
                 }
@@ -459,6 +223,25 @@ public class AppRepository {
         }
     }*/
 
+    public static void getGeorgiaGlobalPrices(Context context, BiConsumer<GeorgiaGlobalPrices, Boolean> callback) {
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        db.collection("settings")
+                .document("georgiaglobal")
+                .addSnapshotListener(new EventListener<DocumentSnapshot>() {
+                    @RequiresApi(api = Build.VERSION_CODES.N)
+                    @Override
+                    public void onEvent(@Nullable DocumentSnapshot snapshot, @Nullable FirebaseFirestoreException error) {
+                        if (snapshot != null && snapshot.exists()) {
+                            GeorgiaGlobalPrices prices = snapshot.toObject(GeorgiaGlobalPrices.class);
+                            if (prices != null) {
+                                callback.accept(prices, true);
+                            } else {
+                                callback.accept(prices, false);
+                            }
+                        }
+                    }
+                });
+    }
 
     public static void getGlobalPrices(Context context, BiConsumer<GlobalPrices, Boolean> callback) {
         FirebaseFirestore db = FirebaseFirestore.getInstance();
@@ -500,6 +283,60 @@ public class AppRepository {
                         }
                     }
                 });
+    }
+
+
+    public static void makeApiCallofCustomToken(Context context, String id, BiConsumer<Boolean, String> callback) {
+
+        OkHttpClient client = new OkHttpClient().newBuilder()
+                .build();
+        MediaType mediaType = MediaType.parse("text/plain");
+        RequestBody body = RequestBody.create(mediaType, "{\n    \"uid\":" + id + "\n}");
+        Request request = new Request.Builder()
+                .url("https://us-central1-beyondlottotv.cloudfunctions.net/createCustomToken")
+                .method("POST", body)
+                .addHeader("Content-Type", "text/plain")
+                .build();
+
+        client.newCall(request).enqueue(new okhttp3.Callback() {
+            @Override
+            public void onResponse(@NonNull Call call, @NonNull Response response) throws IOException {
+                if (response.isSuccessful()) {
+                    String responseBody = response.body().string();
+                    Log.d("TAG", "onResponseapi: " + responseBody);
+                    ApiResponseCustomtoken token = new ApiResponseCustomtoken();
+                    Gson gson = new Gson();
+                    token = gson.fromJson(responseBody, ApiResponseCustomtoken.class);
+
+                    firebaseAuth.signInWithCustomToken(token.getCustomToken())
+                            .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                                @RequiresApi(api = Build.VERSION_CODES.N)
+                                @Override
+                                public void onComplete(@NonNull Task<AuthResult> task) {
+                                    if (task.isSuccessful()) {
+                                        callback.accept(true, "");
+
+                                        String current = FirebaseAuth.getInstance().getCurrentUser().getUid();
+                                        db.collection("users")
+                                                .document(current).update("login_status", true);
+                                    } else {
+                                        callback.accept(false, task.getException().getMessage());
+                                    }
+                                }
+                            });
+
+
+                } else {
+                    Log.e("API_CALL", "Unsuccessful response: " + response.code());
+                }
+            }
+
+            @Override
+            public void onFailure(okhttp3.Call call, IOException e) {
+                // Handle the failure here
+//                Log.d(TAG, "onFailureapi: " + e);
+            }
+        });
     }
 
 

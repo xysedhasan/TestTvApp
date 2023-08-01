@@ -4,8 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="20dp"
     android:background="@color/graybg"
+    android:padding="20dp"
     tools:context=".Activities.ChooseScreenActivity">
 
     <RelativeLayout
@@ -17,10 +17,10 @@
             android:id="@+id/text"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:layout_marginTop="20dp"
             android:text="Choose a Screen to display on your TV"
             android:textColor="#ffffff"
-            android:layout_marginTop="20dp"
-            android:layout_margin="10dp"
             android:textSize="20sp" />
 
         <LinearLayout
@@ -28,81 +28,88 @@
             android:layout_height="wrap_content"
             android:layout_below="@+id/text"
             android:layout_marginTop="20dp"
-            android:weightSum="5">
+            android:weightSum="7">
 
             <Button
-                android:visibility="gone"
                 android:id="@+id/rltvscreen1"
-                android:nextFocusRight="@id/rltvscreen2"
                 android:layout_width="100dp"
                 android:layout_height="100dp"
-                android:layout_weight="1"
                 android:layout_margin="10dp"
+                android:layout_weight="1"
                 android:background="@drawable/button1hover"
-                />
-
-
+                android:nextFocusRight="@id/rltvscreen2"
+                android:visibility="gone" />
 
 
             <Button
                 android:id="@+id/rltvscreen2"
-                android:visibility="gone"
-                android:nextFocusRight="@id/rltvscreen3"
-                android:nextFocusLeft="@id/rltvscreen1"
                 android:layout_width="100dp"
                 android:layout_height="100dp"
-                android:layout_weight="1"
                 android:layout_margin="10dp"
-                android:background="@drawable/button2hover">
-            </Button>
-
-
+                android:layout_weight="1"
+                android:background="@drawable/button2hover"
+                android:nextFocusLeft="@id/rltvscreen1"
+                android:nextFocusRight="@id/rltvscreen3"
+                android:visibility="gone"></Button>
 
 
             <Button
                 android:id="@+id/rltvscreen3"
-                android:visibility="gone"
-                android:nextFocusLeft="@id/rltvscreen2"
-                android:nextFocusRight="@id/rltvscreen4"
                 android:layout_width="100dp"
                 android:layout_height="100dp"
-                android:layout_weight="1"
                 android:layout_margin="10dp"
-                android:background="@drawable/button3hover">
+                android:layout_weight="1"
+                android:background="@drawable/button3hover"
+                android:nextFocusLeft="@id/rltvscreen2"
+                android:nextFocusRight="@id/rltvscreen4"
+                android:visibility="gone">
 
             </Button>
-
 
 
             <Button
                 android:id="@+id/rltvscreen4"
-                android:visibility="gone"
-                android:nextFocusLeft="@id/rltvscreen3"
-                android:nextFocusRight="@id/rltvscreen5"
                 android:layout_width="100dp"
                 android:layout_height="100dp"
-                android:layout_weight="1"
                 android:layout_margin="10dp"
-                android:background="@drawable/button4hover">
-
+                android:layout_weight="1"
+                android:background="@drawable/button4hover"
+                android:nextFocusLeft="@id/rltvscreen3"
+                android:nextFocusRight="@id/rltvscreen5"
+                android:visibility="gone">
             </Button>
-
 
 
             <Button
                 android:id="@+id/rltvscreen5"
-                android:visibility="gone"
-                android:nextFocusLeft="@id/rltvscreen4"
                 android:layout_width="100dp"
                 android:layout_height="100dp"
-                android:layout_weight="1"
                 android:layout_margin="10dp"
-                android:background="@drawable/button5hover">
-            </Button>
+                android:layout_weight="1"
+                android:background="@drawable/button5hover"
+                android:nextFocusLeft="@id/rltvscreen4"
+                android:visibility="gone"></Button>
 
+            <Button
+                android:id="@+id/rltvscreen6"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:layout_margin="10dp"
+                android:layout_weight="1"
+                android:background="@drawable/button6hover"
+                android:nextFocusLeft="@id/rltvscreen5"
+                android:visibility="gone"></Button>
+
+            <Button
+                android:id="@+id/rltvscreen7"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:layout_margin="10dp"
+                android:layout_weight="1"
+                android:background="@drawable/button7hover"
+                android:nextFocusLeft="@id/rltvscreen6"
+                android:visibility="gone"></Button>
         </LinearLayout>
-
-
     </RelativeLayout>
 
 </RelativeLayout>
