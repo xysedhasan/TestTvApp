@@ -56,6 +56,7 @@ public class AppRepository {
                             callback.accept(true, "");
 
                             String current = FirebaseAuth.getInstance().getCurrentUser().getUid();
+                            Prefrences.setId(context,current);
                             db.collection("users")
                                     .document(current).update("login_status", true);
                         } else {
@@ -71,6 +72,10 @@ public class AppRepository {
         String current = FirebaseAuth.getInstance().getCurrentUser().getUid();
         db.collection("users")
                 .document(current).update("login_status", true);
+        LoginData loginData = new LoginData("", "", 0,false);
+        db.collection("login")
+                .document("thisisthelogingeneratedcode")
+                .set(loginData);
     }
 
     public static void getGames(Context context) {
@@ -100,7 +105,19 @@ public class AppRepository {
     public static void getUser(Activity activity, Context context, String screenNo, BiConsumer<Boolean, UserNew> callback) {
 
         FirebaseFirestore db = FirebaseFirestore.getInstance();
-        String current = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        String current = "";
+        if (Prefrences.getId(context) != null && !Prefrences.getId(context).equals("")){
+            current = Prefrences.getId(context);
+        }else {
+            FirebaseAuth auth = FirebaseAuth.getInstance();
+            FirebaseUser user = auth.getCurrentUser();
+            if (user != null) {
+                  current = user.getUid();
+            }else {
+                checklogout(activity,false,context);
+            }
+        }
+
         db.collection("users")
                 .document(current)
                 .addSnapshotListener(new EventListener<DocumentSnapshot>() {
@@ -112,15 +129,21 @@ public class AppRepository {
                             //checklogout
                             if (user != null) {
                                 Prefrences.saveUserDetails(context, user, screenNo);
-                                Prefrences.setTotalBoxesScreen1(context, user.getScreen1().getTotal_boxes());
-                                Prefrences.setTotalBoxesScreen2(context, user.getScreen2().getTotal_boxes());
-                                Prefrences.setTotalBoxesScreen3(context, user.getScreen3().getTotal_boxes());
-                                callback.accept(true, user);
                                 try {
+                                if (user.getScreen1() != null) {
+                                    Prefrences.setTotalBoxesScreen1(context, user.getScreen1().getTotal_boxes());
+                                }
+                                if (user.getScreen2() != null) {
+                                    Prefrences.setTotalBoxesScreen2(context, user.getScreen2().getTotal_boxes());
+                                }
+                                if (user.getScreen3() != null) {
+                                    Prefrences.setTotalBoxesScreen3(context, user.getScreen3().getTotal_boxes());
+                                }
                                     checklogout(activity, user.isLogin_status(), context);
                                 } catch (Exception e) {
                                     Toast.makeText(activity, e.toString(), Toast.LENGTH_SHORT).show();
                                 }
+                                callback.accept(true, user);
                             }
                         }
                     }
@@ -130,22 +153,23 @@ public class AppRepository {
 
     @RequiresApi(api = Build.VERSION_CODES.N)
     public static void getGamesofUser(Activity activity, UserNew user, Context context, String screenNo, BiConsumer<String, String> callback) {
+
+
         if (screenNo.equals("screen1")) {
-            MainactivityPortraitActivity.initrecycler(context, user.getScreen1(), user.getScreen1().isShow_header(), user.getScreen1().getOrientation(), user.getScreen1().getTotal_boxes(), user.getScreen1().getEmpty_box(), user.getScreen1().getEmpty_box_custom_image());
+            MainactivityPortraitActivity.initrecycler(context, user.isSubscribeInventory(), user.getScreen1(), user.getScreen1().isShow_header(), user.getScreen1().getOrientation(), user.getScreen1().getTotal_boxes(), user.getScreen1().getEmpty_box(), user.getScreen1().getEmpty_box_custom_image());
 //            Screen1Activity.initrecycler(context, user.getScreen1(), user.getScreen1().isShow_header(), user.getScreen1().getOrientation(), user.getScreen1().getTotal_boxes(), user.getScreen1().getEmpty_box(), user.getScreen1().getEmpty_box_custom_image());
         } else if (screenNo.equals("screen2")) {
-            MainactivityPortraitActivity.initrecycler(context, user.getScreen2(), user.getScreen2().isShow_header(), user.getScreen2().getOrientation(), user.getScreen2().getTotal_boxes(), user.getScreen2().getEmpty_box(), user.getScreen2().getEmpty_box_custom_image());
+            MainactivityPortraitActivity.initrecycler(context, user.isSubscribeInventory(), user.getScreen2(), user.getScreen2().isShow_header(), user.getScreen2().getOrientation(), user.getScreen2().getTotal_boxes(), user.getScreen2().getEmpty_box(), user.getScreen2().getEmpty_box_custom_image());
 //            Screen2Activity.initrecycler(context, user.getScreen2(), user.getScreen2().isShow_header(), user.getScreen2().getOrientation(), user.getScreen2().getTotal_boxes(), user.getScreen2().getEmpty_box(), user.getScreen2().getEmpty_box_custom_image());
 
         } else if (screenNo.equals("screen3")) {
-            MainactivityPortraitActivity.initrecycler(context, user.getScreen3(), user.getScreen3().isShow_header(), user.getScreen3().getOrientation(), user.getScreen3().getTotal_boxes(), user.getScreen3().getEmpty_box(), user.getScreen3().getEmpty_box_custom_image());
+            MainactivityPortraitActivity.initrecycler(context, user.isSubscribeInventory(), user.getScreen3(), user.getScreen3().isShow_header(), user.getScreen3().getOrientation(), user.getScreen3().getTotal_boxes(), user.getScreen3().getEmpty_box(), user.getScreen3().getEmpty_box_custom_image());
 //            Screen3Activity.initrecycler(context, user.getScreen3(), user.getScreen3().isShow_header(), user.getScreen3().getOrientation(), user.getScreen3().getTotal_boxes(), user.getScreen3().getEmpty_box(), user.getScreen3().getEmpty_box_custom_image());
 
         } else if (screenNo.equals("screen4")) {
-            MainactivityPortraitActivity.initrecycler(context, user.getScreen4(), user.getScreen4().isShow_header(), user.getScreen4().getOrientation(), user.getScreen4().getTotal_boxes(), user.getScreen4().getEmpty_box(), user.getScreen4().getEmpty_box_custom_image());
+            MainactivityPortraitActivity.initrecycler(context, user.isSubscribeInventory(), user.getScreen4(), user.getScreen4().isShow_header(), user.getScreen4().getOrientation(), user.getScreen4().getTotal_boxes(), user.getScreen4().getEmpty_box(), user.getScreen4().getEmpty_box_custom_image());
 //            Screen4Activity.initrecycler(context, user.getScreen4(), user.getScreen4().isShow_header(), user.getScreen4().getOrientation(), user.getScreen4().getTotal_boxes(), user.getScreen4().getEmpty_box(), user.getScreen4().getEmpty_box_custom_image());
         } else if (screenNo.equals("screen5")) {
-
             if (user.getScreen5() != null) {
                 if (user.getScreen5().getMedia_url() != null) {
                     callback.accept(user.getScreen5().getMedia_type(), user.getScreen5().getMedia_url());
@@ -177,7 +201,6 @@ public class AppRepository {
                 callback.accept(null, null);
             }
         }
-
     }
 
     public static void checklogout(Activity activity, Boolean islogin, Context context) {
@@ -264,6 +287,26 @@ public class AppRepository {
                 });
     }
 
+    public static void getCustomTokenofLogin(Context context, BiConsumer<LoginData, Boolean> callback) {
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        db.collection("login")
+                .document("thisisthelogingeneratedcode")
+                .addSnapshotListener(new EventListener<DocumentSnapshot>() {
+                    @RequiresApi(api = Build.VERSION_CODES.N)
+                    @Override
+                    public void onEvent(@Nullable DocumentSnapshot snapshot, @Nullable FirebaseFirestoreException error) {
+                        if (snapshot != null && snapshot.exists()) {
+                            LoginData loginData = snapshot.toObject(LoginData.class);
+                            if (loginData != null) {
+                                callback.accept(loginData, true);
+                            } else {
+                                callback.accept(loginData, false);
+                            }
+                        }
+                    }
+                });
+    }
+
     public static void getGlobalDaysandWinings(Context context, BiConsumer<GlobalDayndWinning, Boolean> callback) {
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         db.collection("settings")
@@ -285,59 +328,19 @@ public class AppRepository {
                 });
     }
 
-
-    public static void makeApiCallofCustomToken(Context context, String id, BiConsumer<Boolean, String> callback) {
-
-        OkHttpClient client = new OkHttpClient().newBuilder()
-                .build();
-        MediaType mediaType = MediaType.parse("text/plain");
-        RequestBody body = RequestBody.create(mediaType, "{\n    \"uid\":" + id + "\n}");
-        Request request = new Request.Builder()
-                .url("https://us-central1-beyondlottotv.cloudfunctions.net/createCustomToken")
-                .method("POST", body)
-                .addHeader("Content-Type", "text/plain")
-                .build();
-
-        client.newCall(request).enqueue(new okhttp3.Callback() {
-            @Override
-            public void onResponse(@NonNull Call call, @NonNull Response response) throws IOException {
-                if (response.isSuccessful()) {
-                    String responseBody = response.body().string();
-                    Log.d("TAG", "onResponseapi: " + responseBody);
-                    ApiResponseCustomtoken token = new ApiResponseCustomtoken();
-                    Gson gson = new Gson();
-                    token = gson.fromJson(responseBody, ApiResponseCustomtoken.class);
-
-                    firebaseAuth.signInWithCustomToken(token.getCustomToken())
-                            .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-                                @RequiresApi(api = Build.VERSION_CODES.N)
-                                @Override
-                                public void onComplete(@NonNull Task<AuthResult> task) {
-                                    if (task.isSuccessful()) {
-                                        callback.accept(true, "");
-
-                                        String current = FirebaseAuth.getInstance().getCurrentUser().getUid();
-                                        db.collection("users")
-                                                .document(current).update("login_status", true);
-                                    } else {
-                                        callback.accept(false, task.getException().getMessage());
-                                    }
-                                }
-                            });
-
-
-                } else {
-                    Log.e("API_CALL", "Unsuccessful response: " + response.code());
-                }
-            }
-
-            @Override
-            public void onFailure(okhttp3.Call call, IOException e) {
-                // Handle the failure here
-//                Log.d(TAG, "onFailureapi: " + e);
-            }
-        });
+    public static  void signinWithCustomToken(String token,BiConsumer<String, Boolean> callback){
+        firebaseAuth.signInWithCustomToken(token)
+                .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                    @RequiresApi(api = Build.VERSION_CODES.N)
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+                        if (task.isSuccessful()) {
+                            callback.accept(  "",true);
+                        } else {
+                            callback.accept(task.getException().getMessage(),false);
+                        }
+                    }
+                });
     }
-
 
 }

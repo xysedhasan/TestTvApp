@@ -49,6 +49,7 @@
 
         <ImageView
             android:id="@+id/soldimg"
+            android:visibility="gone"
             android:layout_width="20dp"
             android:layout_height="55dp"
             android:src="@drawable/soldicon1"
@@ -67,6 +68,7 @@
             android:layout_marginBottom="2dp">
             <TextView
                 android:id="@+id/ticketNumber"
+                android:visibility="gone"
                 android:layout_width="38dp"
                 android:layout_height="28dp"
                 android:layout_centerHorizontal="true"

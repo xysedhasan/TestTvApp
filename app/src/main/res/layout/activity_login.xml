@@ -88,6 +88,14 @@
                     android:layout_centerHorizontal="true"
                     android:textColor="#FFFFFF"
                     android:textSize="8sp" />
+                <ProgressBar
+                    android:id="@+id/progressqr"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:visibility="gone"
+                    android:layout_below="@+id/qrtv1"
+                    android:layout_centerHorizontal="true"
+                    />
             </RelativeLayout>
 
             <RelativeLayout

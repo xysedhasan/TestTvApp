@@ -8,7 +8,7 @@ public class UserNew {
     String company_name,contact_person_location,contact_person_phone,location_phone,owner_phone,store_address,store_email,store_name;
     String subscription_expires;
     Date created_at, updated_at;
-    boolean is_blocked, is_paid_user, login_status;
+    boolean is_blocked, is_paid_user, login_status,subscribeInventory;
     Screen1 screen1;
     Screen1 screen2;
     Screen1 screen3;
@@ -18,6 +18,14 @@ public class UserNew {
     Screen3 screen7;
 
     public UserNew() {
+    }
+
+    public boolean isSubscribeInventory() {
+        return subscribeInventory;
+    }
+
+    public void setSubscribeInventory(boolean subscribeInventory) {
+        this.subscribeInventory = subscribeInventory;
     }
 
     public String getId() {

@@ -3,6 +3,8 @@ package com.app.beyondlottotv.Model;
 import android.animation.ValueAnimator;
 import android.content.Context;
 import android.graphics.Color;
+import android.os.Handler;
+import android.os.Looper;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
@@ -17,9 +19,11 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.app.beyondlottotv.R;
+import com.squareup.picasso.Picasso;
 
 public class GridAdapter extends BaseAdapter {
     Context context;
+    Boolean subscribeInventory;
     String screenNo;
     Screen1 screen1;
     private static final String TAG = "GridAdapter";
@@ -30,8 +34,9 @@ public class GridAdapter extends BaseAdapter {
     String empty_box, imageurl;
 
 
-    public GridAdapter(Context context, String screenNo, Screen1 screen1, int sizeoflyt, String orientation, int boxes, String empty_box, String imageurl) {
+    public GridAdapter(Context context, Boolean subscribeInventory, String screenNo, Screen1 screen1, int sizeoflyt, String orientation, int boxes, String empty_box, String imageurl) {
         this.context = context;
+        this.subscribeInventory = subscribeInventory;
         this.screenNo = screenNo;
         this.screen1 = screen1;
         this.sizeoflyt = sizeoflyt;
@@ -40,7 +45,6 @@ public class GridAdapter extends BaseAdapter {
         this.empty_box = empty_box;
         this.imageurl = imageurl;
     }
-
 
     @Override
     public int getCount() {
@@ -84,36 +88,9 @@ public class GridAdapter extends BaseAdapter {
         soldImg = (ImageView) convertView.findViewById(R.id.soldimg);
         priceimg = (ImageView) convertView.findViewById(R.id.tiketpriceimg);
 
-        int tnumber = 0;
-        if (screen1.getBox_settings().get(position) != null) {
-            if (screen1.getBox_settings().get(position).getTicket_no() != null) {
-                String strnumber = screen1.getBox_settings().get(position).getTicket_no();
-                String tiNumber = strnumber;
-                if (strnumber.length() > 2) {
-                    tiNumber = strnumber.substring(strnumber.length() - 3);
-                }
-                if (tiNumber.equals("")) {
-                    tiNumber = "0";
-                }
-                tnumber = Integer.parseInt(tiNumber);
-                tickenumber.setText("T" + String.valueOf(tnumber + 1));
-            } else {
-                tickenumber.setVisibility(View.GONE);
-            }
-
-            String packsize = screen1.getBox_settings().get(position).getPack_size();
-            if (packsize != null && !packsize.equals("")) {
-                if (tnumber > Integer.parseInt(packsize)) {
-                    soldImg.setVisibility(View.VISIBLE);
-                    tickenumber.setVisibility(View.GONE);
-                } else {
-                    soldImg.setVisibility(View.GONE);
-                }
-            } else {
-                soldImg.setVisibility(View.GONE);
-            }
+        if (subscribeInventory) {
+            tickenumber.setVisibility(View.VISIBLE);
         }
-
 
         if (orientation.equals("landscape")) {
             if (boxes == 100) {
@@ -338,20 +315,12 @@ public class GridAdapter extends BaseAdapter {
             imgNumber.setText(String.valueOf(Prefrences.getTotalBoxesScreen1(context) + Prefrences.getTotalBoxesScreen2(context) + Prefrences.getTotalBoxesScreen3(context) + position + 1));
         }
 
-        if (screenNo.equals("screen1")) {
-            if (screen1.getBox_settings().get(position) != null) {
-                if (screen1.getBox_settings().get(position).getGame_image() != null && !screen1.getBox_settings().get(position).getGame_image().contains("null")) {
-                    if (context != null) {
-                        Glide.with(context).load(screen1.getBox_settings().get(position).getGame_image()).into(imageView);
-                    }
-                } else {
-                    if (empty_box != null) {
-                        if (empty_box.equals("Custom")) {
-                            Glide.with(context).load(imageurl).into(imageView);
-                        } else if (empty_box.equals("Coming Soon")) {
-                            Glide.with(context).load(R.drawable.comingsoon).into(imageView);
-                        }
-                    }
+
+        if (screen1.getBox_settings().get(position) != null) {
+            if (screen1.getBox_settings().get(position).getGame_image() != null && !screen1.getBox_settings().get(position).getGame_image().contains("null") && !screen1.getBox_settings().get(position).getGame_image().equals("")) {
+                if (context != null) {
+                    Picasso.get().load(screen1.getBox_settings().get(position).getGame_image()).into(imageView);
+//                    Glide.with(context).load(screen1.getBox_settings().get(position).getGame_image()).into(imageView);
                 }
             } else {
                 if (empty_box != null) {
@@ -361,10 +330,53 @@ public class GridAdapter extends BaseAdapter {
                         Glide.with(context).load(R.drawable.comingsoon).into(imageView);
                     }
                 }
+            }
+        } else {
+            if (empty_box != null) {
+                if (empty_box.equals("Custom")) {
+                    Glide.with(context).load(imageurl).into(imageView);
+                } else if (empty_box.equals("Coming Soon")) {
+                    Glide.with(context).load(R.drawable.comingsoon).into(imageView);
+                }
+            }
+        }
 
+
+        int tnumber = 0;
+        if (screen1.getBox_settings().get(position) != null) {
+            if (screen1.getBox_settings().get(position).getTicket_no() != null) {
+                String strnumber = screen1.getBox_settings().get(position).getTicket_no();
+                String tiNumber = strnumber;
+                if (strnumber.length() > 2) {
+                    tiNumber = strnumber.substring(strnumber.length() - 3);
+                }
+                if (tiNumber.equals("")) {
+                    tiNumber = "0";
+                }
+
+                tnumber = Integer.parseInt(tiNumber);
+                tickenumber.setText("T" + String.valueOf(tnumber + 1));
+
+            } else {
+                tickenumber.setVisibility(View.GONE);
             }
 
+
+            String packsize = screen1.getBox_settings().get(position).getPack_size();
+            if (packsize != null && !packsize.equals("")) {
+                if (tnumber + 1 > Integer.parseInt(packsize)) {
+                    if (subscribeInventory) {
+                        soldImg.setVisibility(View.VISIBLE);
+                    }
+                    tickenumber.setVisibility(View.GONE);
+                } else {
+                    soldImg.setVisibility(View.GONE);
+                }
+            } else {
+                soldImg.setVisibility(View.GONE);
+            }
         }
+
 
         if (screen1.getBox_settings().get(position) != null) {
             if (screen1.getBox_settings().get(position).getTicket_value() != null && !screen1.getBox_settings().get(position).getTicket_value().equals("")) {

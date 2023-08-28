@@ -22,27 +22,6 @@ public class Prefrences {
         editor.putString("region", user.getRegion());
         editor.putString("id", user.getId());
         editor.putBoolean("isLoggedin", user.isLogin_status());
-
-
-//        if (screenNo.equals("screen1")) {
-//            editor.putString("empty_box_custom_image", user.getScreen1().getEmpty_box_custom_image());
-//        } else if (screenNo.equals("screen2")) {
-//            editor.putBoolean("show_header", user.getScreen2().isShow_header());
-//            editor.putString("empty_box_custom_image", user.getScreen2().getEmpty_box_custom_image());
-//        } else if (screenNo.equals("screen3")) {
-//            if (user.getScreen3().getOrientation() != null) {
-//                editor.putString("orientation", user.getScreen3().getOrientation());
-//            }
-//        } else if (screenNo.equals("screen4")) {
-//            if (user.getScreen4().getOrientation() != null) {
-//                editor.putString("orientation", user.getScreen4().getOrientation());
-//            }
-//
-//        } else if (screenNo.equals("screen5")) {
-//            if (user.getScreen5().getOrientation() != null) {
-//                editor.putString("orientation", user.getScreen5().getOrientation());
-//            }
-//        }
         editor.apply();
     }
 
@@ -74,8 +53,16 @@ public class Prefrences {
         editor.remove(key);
         editor.apply();
     }
-
-
+    public static String getId(Context context) {
+        SharedPreferences prefs = context.getSharedPreferences("userDetail", MODE_PRIVATE);
+        return prefs.getString("id", "");
+    }
+    public static void setId(Context context, String id) {
+        SharedPreferences prefs = context.getSharedPreferences("userDetail", MODE_PRIVATE);
+        SharedPreferences.Editor editor = prefs.edit();
+        editor.putString("id", id);
+        editor.apply();
+    }
     public static int getTotalBoxesScreen2(Context context) {
         SharedPreferences prefs = context.getSharedPreferences("userDetail", MODE_PRIVATE);
         return prefs.getInt("total_boxesscreen2", 0);

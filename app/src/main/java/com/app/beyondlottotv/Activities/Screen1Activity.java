@@ -278,7 +278,7 @@ public class Screen1Activity extends AppCompatActivity {
         if (showheader) {
             sizeoflyt = sizeoflyt - headerrltv.getHeight();
         }
-        GridAdapter adpter = new GridAdapter(context, "1", screen1, sizeoflyt, orientation, boxes, empty_box, imageurl);
+        GridAdapter adpter = new GridAdapter(context,true, "1", screen1, sizeoflyt, orientation, boxes, empty_box, imageurl);
         gridView.setAdapter(adpter);
         pbar.setVisibility(View.GONE);
     }

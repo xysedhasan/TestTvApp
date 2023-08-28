@@ -262,7 +262,7 @@ public class Screen3Activity extends AppCompatActivity {
         } else {
             sizeoflyt = parent.getHeight() - 5;
         }
-        GridAdapter adpter = new GridAdapter(context, "3", screen3, sizeoflyt, orientation, boxes, empty_box, imageurl);
+        GridAdapter adpter = new GridAdapter(context,true, "3", screen3, sizeoflyt, orientation, boxes, empty_box, imageurl);
         gridView.setAdapter(adpter);
 
     }

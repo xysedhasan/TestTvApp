@@ -29,7 +29,6 @@ public class ChooseScreenActivity extends AppCompatActivity {
         AppCompatDelegate.setCompatVectorFromResourcesEnabled(true);
         //  setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 
-
         AppRepository.getUser(this, getApplicationContext(), "", (status, user) -> {
             if (user != null) {
                 userme = user;
@@ -42,6 +41,10 @@ public class ChooseScreenActivity extends AppCompatActivity {
                     screen5.setVisibility(View.GONE);
                     screen6.setVisibility(View.GONE);
                     screen7.setVisibility(View.GONE);
+
+                    Intent intent = new Intent(ChooseScreenActivity.this, MainactivityPortraitActivity.class);
+                    intent.putExtra("from", "screen1");
+                    startActivity(intent);
 
                 } else if (user.getAccount_type().equals("B2")) {
                     //        B2 - 2 Screen lotto
@@ -147,6 +150,8 @@ public class ChooseScreenActivity extends AppCompatActivity {
                     screen6.setNextFocusLeftId(R.id.rltvscreen5);
                     screen6.setNextFocusRightId(R.id.rltvscreen7);
                 }
+            }else {
+                AppRepository.checklogout(this,false,ChooseScreenActivity.this);
             }
         });
 
@@ -224,8 +229,8 @@ public class ChooseScreenActivity extends AppCompatActivity {
         screen6 = findViewById(R.id.rltvscreen6);
         screen7 = findViewById(R.id.rltvscreen7);
 
-        new ScrapeWebsiteTask().execute();
-        new GeorgiaScrapeTask().execute();
+//        new ScrapeWebsiteTask().execute();
+//        new GeorgiaScrapeTask().execute();
     }
 
     @Override

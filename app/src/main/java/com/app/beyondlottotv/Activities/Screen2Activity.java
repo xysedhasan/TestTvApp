@@ -260,7 +260,7 @@ public class Screen2Activity extends AppCompatActivity {
         } else {
             sizeoflyt = parent.getHeight() - 5;
         }
-        GridAdapter adpter = new GridAdapter(context, "2", screen2, sizeoflyt, orientation, boxes, empty_box, imageurl);
+        GridAdapter adpter = new GridAdapter(context, true,"2", screen2, sizeoflyt, orientation, boxes, empty_box, imageurl);
         gridView.setAdapter(adpter);
         pbar.setVisibility(View.GONE);
     }

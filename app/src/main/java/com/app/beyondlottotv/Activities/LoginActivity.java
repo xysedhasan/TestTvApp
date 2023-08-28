@@ -16,6 +16,7 @@ import android.widget.Toast;
 
 import com.app.beyondlottotv.Api.ApiResponseCustomtoken;
 import com.app.beyondlottotv.Model.AppRepository;
+import com.app.beyondlottotv.Model.LoginData;
 import com.app.beyondlottotv.Model.Prefrences;
 import com.app.beyondlottotv.R;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -23,6 +24,7 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.gson.Gson;
 import com.squareup.picasso.Picasso;
 
@@ -47,7 +49,7 @@ public class LoginActivity extends AppCompatActivity {
     Button submit;
     EditText emaiEt, passwordEt;
     private ImageView qrCodeImageView;
-    ProgressBar pbar;
+    ProgressBar pbar,pbarqr;
     private FirebaseAuth mAuth;
     private static final String TAG = "LoginActivity";
 
@@ -57,12 +59,7 @@ public class LoginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         init();
-        LoginActivity.this.runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                loginwithCustomtoken("ifipKJMUxAfrONn1lTMiChgkTb63");
-            }
-        });
+
 
         submit.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -114,14 +111,14 @@ public class LoginActivity extends AppCompatActivity {
 
         submit = findViewById(R.id.continuerltv);
         emaiEt = findViewById(R.id.emailet);
+        pbarqr = findViewById(R.id.progressqr);
         passwordEt = findViewById(R.id.passwordet);
         pbar = findViewById(R.id.progressbr);
         qrCodeImageView = findViewById(R.id.ivqrcodeimg);
-        String uniqueIdentifier = generateUniqueIdentifier(); // Implement your logic to generate a unique identifier
-        String loginCode = generateLoginCode(uniqueIdentifier); // Generate the login code using a cryptographic algorithm
+//        String loginCode = generateLoginCode(uniqueIdentifier); // Generate the login code using a cryptographic algorithm
+        String loginCode = "thisisthelogingeneratedcode";
         Picasso.get().load(QRCode.from(loginCode).withSize(250, 250).file()).into(qrCodeImageView);
-
-
+        getCustomtoken();
     }
 
     @Override
@@ -130,56 +127,49 @@ public class LoginActivity extends AppCompatActivity {
         finishAffinity();
     }
 
-    // Function to generate the login code using a cryptographic algorithm
-    private String generateLoginCode(String uniqueIdentifier) {
-        try {
-            // Generate the hash value using a cryptographic algorithm (e.g., SHA-256 or HMAC)
-            MessageDigest digest = MessageDigest.getInstance("SHA-256");
-            byte[] hashBytes = digest.digest(uniqueIdentifier.getBytes(StandardCharsets.UTF_8));
-
-            // Convert the hash bytes to a hexadecimal string representation
-            StringBuilder hexString = new StringBuilder();
-            for (byte b : hashBytes) {
-                String hex = Integer.toHexString(0xff & b);
-                if (hex.length() == 1) {
-                    hexString.append('0');
-                }
-                hexString.append(hex);
-            }
-
-            // Return the login code as a string
-            return hexString.toString();
-        } catch (NoSuchAlgorithmException e) {
-            e.printStackTrace();
-            return null;
-        }
-    }
-
     private String generateUniqueIdentifier() {
         long timestamp = System.currentTimeMillis(); // Get the current timestamp
         return String.valueOf(timestamp);
     }
 
+    private void getCustomtoken() {
+        pbarqr.setVisibility(View.VISIBLE);
+        AppRepository.getCustomTokenofLogin(getApplicationContext(), (data, status) -> {
+            if (status) {
+                signInwithCustomToken(data);
+            }
+        });
+    }
 
-    private void loginwithCustomtoken(String id) {
-        AppRepository.makeApiCallofCustomToken(getApplicationContext(), id, (status, err) -> {
-            this.runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    pbar.setVisibility(View.GONE);
-                    if (status) {
+    private void signInwithCustomToken(LoginData data) {
+        if (data.isStatus()) {
+            pbarqr.setVisibility(View.VISIBLE);
+            if (!data.getToken().equals("") && data.getToken() != null){
+                AppRepository.signinWithCustomToken(data.getToken(), (err, status) -> {
+                    if (true) {
                         AppRepository.updatelogin();
                         Prefrences.setisLoggedin(getApplicationContext(), true);
                         Intent intent = new Intent(LoginActivity.this, ChooseScreenActivity.class);
                         startActivity(intent);
-                    } else {
-                        Toast.makeText(LoginActivity.this, err, Toast.LENGTH_SHORT).show();
+                        pbarqr.setVisibility(View.GONE);
+                    }else {
+                        pbarqr.setVisibility(View.GONE);
+                        Toast.makeText(this, "Something went wrong!", Toast.LENGTH_SHORT).show();
                     }
-                }
-            });
-        });
+                });
+            }else {
+                pbarqr.setVisibility(View.GONE);
+            }
+
+        }else {
+            pbarqr.setVisibility(View.GONE);
+        }
     }
-
-
-
+    private void clearCustomtoken(){
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        LoginData loginData = new LoginData("", "", 0,false);
+        db.collection("login")
+                .document("thisisthelogingeneratedcode")
+                .set(loginData);
+    }
 }
