@@ -13,8 +13,6 @@ public class BootCompletedReceiver extends BroadcastReceiver {
             Intent activityIntent = new Intent(context, ChooseScreenActivity.class);
             activityIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             context.startActivity(activityIntent);
-
-
         }
     }
 }

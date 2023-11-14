@@ -246,7 +246,6 @@ public class PortraitAdapter extends BaseAdapter {
 
         }
 
-
         if (screen1.getBox_settings().get(position) != null) {
             if (screen1.getBox_settings().get(position).getTicket_value() != null && !screen1.getBox_settings().get(position).getTicket_value().equals("")) {
                 if (screen1.getBox_settings().get(position).getTicket_value().equals("$1")) {

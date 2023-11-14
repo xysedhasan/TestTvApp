@@ -2,7 +2,7 @@ package com.app.beyondlottotv.Model;
 
 public class Screen3 {
 
-    String media_type,media_url,orientation;
+    String media_type,media_url,orientation,video_url;
 
     public String getMedia_type() {
         return media_type;
@@ -26,5 +26,13 @@ public class Screen3 {
 
     public void setOrientation(String orientation) {
         this.orientation = orientation;
+    }
+
+    public String getVideo_url() {
+        return video_url;
+    }
+
+    public void setVideo_url(String video_url) {
+        this.video_url = video_url;
     }
 }

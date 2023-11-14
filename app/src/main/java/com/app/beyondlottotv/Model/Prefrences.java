@@ -104,6 +104,28 @@ public class Prefrences {
         SharedPreferences prefs = context.getSharedPreferences("userDetail", MODE_PRIVATE);
         return prefs.getString("region","Texas");
     }
+    public static int getScreenWidth(Context context) {
+        SharedPreferences prefs = context.getSharedPreferences("userDetail", MODE_PRIVATE);
+        return prefs.getInt("screenWidth", 0);
+    }
+
+    public static void setScreenWidth(Context context, int Width) {
+        SharedPreferences prefs = context.getSharedPreferences("userDetail", context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = prefs.edit();
+        editor.putInt("screenWidth", Width);
+        editor.apply();
+    }
+    public static int getScreenHeight(Context context) {
+        SharedPreferences prefs = context.getSharedPreferences("userDetail", MODE_PRIVATE);
+        return prefs.getInt("screenHeight", 0);
+    }
+
+    public static void setScreenHeight(Context context, int height) {
+        SharedPreferences prefs = context.getSharedPreferences("userDetail", context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = prefs.edit();
+        editor.putInt("screenHeight", height);
+        editor.apply();
+    }
 
     public static ArrayList<Game> getGamesListFromLocal(Context context, String key) {
         SharedPreferences prefs = context.getSharedPreferences("localgameslist", MODE_PRIVATE);

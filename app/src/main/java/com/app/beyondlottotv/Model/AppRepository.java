@@ -14,7 +14,6 @@ import androidx.core.content.ContextCompat;
 
 import com.app.beyondlottotv.Activities.LoginActivity;
 import com.app.beyondlottotv.Activities.MainactivityPortraitActivity;
-import com.app.beyondlottotv.Api.ApiResponseCustomtoken;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
@@ -27,18 +26,11 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
-import com.google.gson.Gson;
 
-import java.io.IOException;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.function.BiConsumer;
-
-import okhttp3.Call;
-import okhttp3.MediaType;
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
-import okhttp3.RequestBody;
-import okhttp3.Response;
 
 
 public class AppRepository {
@@ -56,7 +48,7 @@ public class AppRepository {
                             callback.accept(true, "");
 
                             String current = FirebaseAuth.getInstance().getCurrentUser().getUid();
-                            Prefrences.setId(context,current);
+                            Prefrences.setId(context, current);
                             db.collection("users")
                                     .document(current).update("login_status", true);
                         } else {
@@ -72,13 +64,24 @@ public class AppRepository {
         String current = FirebaseAuth.getInstance().getCurrentUser().getUid();
         db.collection("users")
                 .document(current).update("login_status", true);
-        LoginData loginData = new LoginData("", "", 0,false);
+        LoginData loginData = new LoginData("", "", 0, false);
         db.collection("login")
                 .document("thisisthelogingeneratedcode")
                 .set(loginData);
     }
 
     public static void getGames(Context context) {
+        db.collection("games").whereEqualTo("number","2530").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                for (QueryDocumentSnapshot document : task.getResult()) {
+                    Game game = document.toObject(Game.class);
+                    Log.d("TAG", "imgurl: "+game.image_url);
+                }
+                Log.d("TAG", "onCompletesize: "+task.getResult().size());
+            }
+        });
+
         //get games according to the region type
         db.collection("games").whereEqualTo("region", Prefrences.getRegion(context)).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @RequiresApi(api = Build.VERSION_CODES.N)
@@ -102,58 +105,69 @@ public class AppRepository {
         });
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.N)
     public static void getUser(Activity activity, Context context, String screenNo, BiConsumer<Boolean, UserNew> callback) {
 
+        Log.d("TAG", "getUser: ");
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         String current = "";
-        if (Prefrences.getId(context) != null && !Prefrences.getId(context).equals("")){
+        if (Prefrences.getId(context) != null && !Prefrences.getId(context).equals("")) {
             current = Prefrences.getId(context);
-        }else {
+        } else {
             FirebaseAuth auth = FirebaseAuth.getInstance();
             FirebaseUser user = auth.getCurrentUser();
             if (user != null) {
-                  current = user.getUid();
-            }else {
-                checklogout(activity,false,context);
+                current = user.getUid();
+            } else {
+                checklogout(activity, false, context);
             }
         }
 
-        db.collection("users")
-                .document(current)
-                .addSnapshotListener(new EventListener<DocumentSnapshot>() {
-                    @RequiresApi(api = Build.VERSION_CODES.N)
-                    @Override
-                    public void onEvent(@Nullable DocumentSnapshot snapshot, @Nullable FirebaseFirestoreException error) {
-                        if (snapshot != null && snapshot.exists()) {
-                            UserNew user = snapshot.toObject(UserNew.class);
-                            //checklogout
-                            if (user != null) {
-                                Prefrences.saveUserDetails(context, user, screenNo);
-                                try {
-                                if (user.getScreen1() != null) {
-                                    Prefrences.setTotalBoxesScreen1(context, user.getScreen1().getTotal_boxes());
+        Log.d("TAG", "getUsercurrent: " + current);
+        if (!current.isEmpty()) {
+            db.collection("users")
+                    .document(current)
+                    .addSnapshotListener(new EventListener<DocumentSnapshot>() {
+                        @RequiresApi(api = Build.VERSION_CODES.N)
+                        @Override
+                        public void onEvent(@Nullable DocumentSnapshot snapshot, @Nullable FirebaseFirestoreException error) {
+                            if (snapshot != null && snapshot.exists()) {
+                                UserNew user = snapshot.toObject(UserNew.class);
+                                //checklogout
+                                if (user != null) {
+                                    Prefrences.saveUserDetails(context, user, screenNo);
+                                    try {
+                                        if (user.getScreen1() != null) {
+                                            Prefrences.setTotalBoxesScreen1(context, user.getScreen1().getTotal_boxes());
+                                        }
+                                        if (user.getScreen2() != null) {
+                                            Prefrences.setTotalBoxesScreen2(context, user.getScreen2().getTotal_boxes());
+                                        }
+                                        if (user.getScreen3() != null) {
+                                            Prefrences.setTotalBoxesScreen3(context, user.getScreen3().getTotal_boxes());
+                                        }
+                                        checklogout(activity, user.isLogin_status(), context);
+                                    } catch (Exception e) {
+                                        Toast.makeText(activity, e.toString(), Toast.LENGTH_SHORT).show();
+                                    }
+                                    callback.accept(true, user);
+                                } else {
+                                    callback.accept(false, null);
                                 }
-                                if (user.getScreen2() != null) {
-                                    Prefrences.setTotalBoxesScreen2(context, user.getScreen2().getTotal_boxes());
-                                }
-                                if (user.getScreen3() != null) {
-                                    Prefrences.setTotalBoxesScreen3(context, user.getScreen3().getTotal_boxes());
-                                }
-                                    checklogout(activity, user.isLogin_status(), context);
-                                } catch (Exception e) {
-                                    Toast.makeText(activity, e.toString(), Toast.LENGTH_SHORT).show();
-                                }
-                                callback.accept(true, user);
+                            } else {
+                                callback.accept(false, null);
                             }
                         }
-                    }
-                });
+                    });
+        } else {
+            callback.accept(false, null);
+            checklogout(activity, false, context);
+        }
     }
 
 
     @RequiresApi(api = Build.VERSION_CODES.N)
     public static void getGamesofUser(Activity activity, UserNew user, Context context, String screenNo, BiConsumer<String, String> callback) {
-
 
         if (screenNo.equals("screen1")) {
             MainactivityPortraitActivity.initrecycler(context, user.isSubscribeInventory(), user.getScreen1(), user.getScreen1().isShow_header(), user.getScreen1().getOrientation(), user.getScreen1().getTotal_boxes(), user.getScreen1().getEmpty_box(), user.getScreen1().getEmpty_box_custom_image());
@@ -204,6 +218,7 @@ public class AppRepository {
     }
 
     public static void checklogout(Activity activity, Boolean islogin, Context context) {
+        Log.d("TAG", "checklogout: " + islogin);
         Prefrences.setisLoggedin(context, islogin);
         if (!islogin) {
             Intent intent = new Intent(activity, LoginActivity.class);
@@ -246,6 +261,28 @@ public class AppRepository {
         }
     }*/
 
+
+    public static void getFloridaGlobalPrices(Context context, BiConsumer<FloridaGlobalPrices, Boolean> callback) {
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        db.collection("settings")
+                .document("foridaglobal")
+                .addSnapshotListener(new EventListener<DocumentSnapshot>() {
+                    @RequiresApi(api = Build.VERSION_CODES.N)
+                    @Override
+                    public void onEvent(@Nullable DocumentSnapshot snapshot, @Nullable FirebaseFirestoreException error) {
+                        if (snapshot != null && snapshot.exists()) {
+                            FloridaGlobalPrices prices = snapshot.toObject(FloridaGlobalPrices.class);
+                            if (prices != null) {
+                                callback.accept(prices, true);
+                            } else {
+                                callback.accept(prices, false);
+                            }
+                        }
+                    }
+                });
+    }
+
+
     public static void getGeorgiaGlobalPrices(Context context, BiConsumer<GeorgiaGlobalPrices, Boolean> callback) {
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         db.collection("settings")
@@ -256,6 +293,66 @@ public class AppRepository {
                     public void onEvent(@Nullable DocumentSnapshot snapshot, @Nullable FirebaseFirestoreException error) {
                         if (snapshot != null && snapshot.exists()) {
                             GeorgiaGlobalPrices prices = snapshot.toObject(GeorgiaGlobalPrices.class);
+                            if (prices != null) {
+                                callback.accept(prices, true);
+                            } else {
+                                callback.accept(prices, false);
+                            }
+                        }
+                    }
+                });
+    }
+
+    public static void getCaliforniaGlobalPrices(Context context, BiConsumer<Californiaglobal, Boolean> callback) {
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        db.collection("settings")
+                .document("californiaglobal")
+                .addSnapshotListener(new EventListener<DocumentSnapshot>() {
+                    @RequiresApi(api = Build.VERSION_CODES.N)
+                    @Override
+                    public void onEvent(@Nullable DocumentSnapshot snapshot, @Nullable FirebaseFirestoreException error) {
+                        if (snapshot != null && snapshot.exists()) {
+                            Californiaglobal prices = snapshot.toObject(Californiaglobal.class);
+                            if (prices != null) {
+                                callback.accept(prices, true);
+                            } else {
+                                callback.accept(prices, false);
+                            }
+                        }
+                    }
+                });
+    }
+
+    public static void getArkansasGlobalPrices(Context context, BiConsumer<Arkansasglobal, Boolean> callback) {
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        db.collection("settings")
+                .document("arkansasglobal")
+                .addSnapshotListener(new EventListener<DocumentSnapshot>() {
+                    @RequiresApi(api = Build.VERSION_CODES.N)
+                    @Override
+                    public void onEvent(@Nullable DocumentSnapshot snapshot, @Nullable FirebaseFirestoreException error) {
+                        if (snapshot != null && snapshot.exists()) {
+                            Arkansasglobal prices = snapshot.toObject(Arkansasglobal.class);
+                            if (prices != null) {
+                                callback.accept(prices, true);
+                            } else {
+                                callback.accept(prices, false);
+                            }
+                        }
+                    }
+                });
+    }
+
+    public static void getIdahoGlobalPrices(Context context, BiConsumer<Idahoglobal, Boolean> callback) {
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        db.collection("settings")
+                .document("idahoglobal")
+                .addSnapshotListener(new EventListener<DocumentSnapshot>() {
+                    @RequiresApi(api = Build.VERSION_CODES.N)
+                    @Override
+                    public void onEvent(@Nullable DocumentSnapshot snapshot, @Nullable FirebaseFirestoreException error) {
+                        if (snapshot != null && snapshot.exists()) {
+                            Idahoglobal prices = snapshot.toObject(Idahoglobal.class);
                             if (prices != null) {
                                 callback.accept(prices, true);
                             } else {
@@ -328,19 +425,113 @@ public class AppRepository {
                 });
     }
 
-    public static  void signinWithCustomToken(String token,BiConsumer<String, Boolean> callback){
+    public static void getArkansasWinings(Context context, BiConsumer<ArkansasWinnings, Boolean> callback) {
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        db.collection("settings")
+                .document("winningNumbersArkansas")
+                .addSnapshotListener(new EventListener<DocumentSnapshot>() {
+                    @RequiresApi(api = Build.VERSION_CODES.N)
+                    @Override
+                    public void onEvent(@Nullable DocumentSnapshot snapshot, @Nullable FirebaseFirestoreException error) {
+                        if (snapshot != null && snapshot.exists()) {
+                            ArkansasWinnings dayandwinnigns = snapshot.toObject(ArkansasWinnings.class);
+                            if (dayandwinnigns != null) {
+                                callback.accept(dayandwinnigns, true);
+                            } else {
+                                callback.accept(dayandwinnigns, false);
+                            }
+                        }
+                    }
+                });
+    }
+
+    public static void getCaliforniaWinings(Context context, BiConsumer<CaliforniaWinnings, Boolean> callback) {
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        db.collection("settings")
+                .document("winningNumbersCalifornia")
+                .addSnapshotListener(new EventListener<DocumentSnapshot>() {
+                    @RequiresApi(api = Build.VERSION_CODES.N)
+                    @Override
+                    public void onEvent(@Nullable DocumentSnapshot snapshot, @Nullable FirebaseFirestoreException error) {
+                        if (snapshot != null && snapshot.exists()) {
+                            CaliforniaWinnings dayandwinnigns = snapshot.toObject(CaliforniaWinnings.class);
+                            if (dayandwinnigns != null) {
+                                callback.accept(dayandwinnigns, true);
+                            } else {
+                                callback.accept(dayandwinnigns, false);
+                            }
+                        }
+                    }
+                });
+    }
+
+    public static void getIdahoWinings(Context context, BiConsumer<IdahoWinnings, Boolean> callback) {
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        db.collection("settings")
+                .document("winningNumbersIdaho")
+                .addSnapshotListener(new EventListener<DocumentSnapshot>() {
+                    @RequiresApi(api = Build.VERSION_CODES.N)
+                    @Override
+                    public void onEvent(@Nullable DocumentSnapshot snapshot, @Nullable FirebaseFirestoreException error) {
+                        if (snapshot != null && snapshot.exists()) {
+                            IdahoWinnings dayandwinnigns = snapshot.toObject(IdahoWinnings.class);
+                            if (dayandwinnigns != null) {
+                                callback.accept(dayandwinnigns, true);
+                            } else {
+                                callback.accept(dayandwinnigns, false);
+                            }
+                        }
+                    }
+                });
+    }
+
+    public static void getGeorgiaWinings(Context context, BiConsumer<GeorgiaWinnings, Boolean> callback) {
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        db.collection("settings")
+                .document("winningNumbersGeorgia")
+                .addSnapshotListener(new EventListener<DocumentSnapshot>() {
+                    @RequiresApi(api = Build.VERSION_CODES.N)
+                    @Override
+                    public void onEvent(@Nullable DocumentSnapshot snapshot, @Nullable FirebaseFirestoreException error) {
+                        if (snapshot != null && snapshot.exists()) {
+                            GeorgiaWinnings dayandwinnigns = snapshot.toObject(GeorgiaWinnings.class);
+                            if (dayandwinnigns != null) {
+                                callback.accept(dayandwinnigns, true);
+                            } else {
+                                callback.accept(dayandwinnigns, false);
+                            }
+                        }
+                    }
+                });
+    }
+
+
+    public static void signinWithCustomToken(String token, BiConsumer<String, Boolean> callback) {
         firebaseAuth.signInWithCustomToken(token)
                 .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                     @RequiresApi(api = Build.VERSION_CODES.N)
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
-                            callback.accept(  "",true);
+                            callback.accept("", true);
                         } else {
-                            callback.accept(task.getException().getMessage(),false);
+                            callback.accept(task.getException().getMessage(), false);
                         }
                     }
                 });
+    }
+
+    public static String getYoutubeVideoIdFromUrl(String url) throws MalformedURLException {
+        String query = new URL(url).getQuery();
+        String[] param = query.split("&");
+        String id = null;
+        for (String row : param) {
+            String[] param1 = row.split("=");
+            if (param1[0].equals("v")) {
+                id = param1[1];
+            }
+        }
+        return id;
     }
 
 }

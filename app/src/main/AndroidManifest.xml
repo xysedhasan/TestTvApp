@@ -2,6 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     package="com.app.beyondlottotv">
+
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.WAKE_LOCK" />
@@ -24,6 +25,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Leanback.VerticalGrid"
         android:usesCleartextTraffic="true">
+        <activity
+            android:name=".Activities.VideoAdsActivity"
+            android:theme="@style/Theme.AppCompat"/>
         <activity
             android:name=".Activities.MainactivityPortraitActivity"
             android:theme="@style/Theme.AppCompat" />
@@ -89,7 +93,6 @@
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
             </intent-filter>
         </receiver>
-
     </application>
 
 </manifest>

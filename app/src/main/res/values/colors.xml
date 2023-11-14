@@ -7,6 +7,7 @@
     <color name="default_background">#3d3d3d</color>
     <color name="black">#000000</color>
     <color name="graytext">#808080</color>
+    <color name="lightblue">#0080d1</color>
     <color name="graybg">#141414</color>
     <color name="white">#ffffff</color>
     <color name="greenappcolor">#2805ff</color>
@@ -18,4 +19,6 @@
     <color name="orange">#FFA500</color>
     <color name="yellowis">#FFD700</color>
     <color name="textblue">#233b96</color>
+    <color name="maroon">#d1202f</color>
+    <color name="graydarktext">#3d4750</color>
 </resources>

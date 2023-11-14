@@ -141,7 +141,7 @@ public class ScrapeWebsiteTask extends AsyncTask<Void, Void, ArrayList<String>> 
                     .addOnSuccessListener(aVoid -> {
                         // Data successfully written to Firestore
                         // Add any desired success handling here
-                        Log.d("sucess", "updated winings successfully: ");
+                        Log.d("sucess", "Texas updated winings successfully: ");
                     })
                     .addOnFailureListener(e -> {
                         Log.d("failed", "onPostExecute: " + e);
