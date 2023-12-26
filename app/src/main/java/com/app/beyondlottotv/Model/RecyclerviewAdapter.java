@@ -30,7 +30,6 @@ public class RecyclerviewAdapter extends  RecyclerView.Adapter<RecyclerviewAdapt
     Screen1 screen1;
     private static final String TAG = "GridAdapter";
     int sizeoflyt;
-
     String orientation;
     int boxes;
     String empty_box, imageurl;
@@ -46,6 +45,7 @@ public class RecyclerviewAdapter extends  RecyclerView.Adapter<RecyclerviewAdapt
         this.empty_box = empty_box;
         this.imageurl = imageurl;
     }
+
     @NonNull
     @Override
     public RecyclerviewAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -53,7 +53,6 @@ public class RecyclerviewAdapter extends  RecyclerView.Adapter<RecyclerviewAdapt
         RecyclerviewAdapter.ViewHolder holder = new RecyclerviewAdapter.ViewHolder(view);
         return holder;
     }
-
 
     @Override
     public void onBindViewHolder(@NonNull RecyclerviewAdapter.ViewHolder holder, int position) {
@@ -310,8 +309,6 @@ public class RecyclerviewAdapter extends  RecyclerView.Adapter<RecyclerviewAdapt
                 }
             }
         }
-
-
 
         int tnumber = 0;
         if (screen1.getBox_settings().get(position) != null) {

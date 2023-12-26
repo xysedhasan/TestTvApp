@@ -366,8 +366,6 @@ public class MainactivityPortraitActivity extends AppCompatActivity {
             tvDaysLogos[6].setText("MON | SAT");
             tvDaysLogos[7].setText("MON | SAT");
         }
-
-
     }
 
     private void getsettexasImages() {
